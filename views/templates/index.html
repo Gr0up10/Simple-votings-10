@@ -7,7 +7,7 @@
 </head>
 <body>
  <h1>ЙА РАБОТАЙУ</h1>
- <!--<img src="{% static "img/ricardo.jpg" %}" alt="My image">-->
+ <img src="{% static "img/ricardo.jpg" %}" alt="My image">
 
 
     {% for voting in votings %}
@@ -19,6 +19,9 @@
         {% endfor %}
         <hr>
     {% endfor %}
+<audio controls>
+    <source src="{% static "audio/music.mp3" %}">
+</audio>
 
 </body>
 </html>
