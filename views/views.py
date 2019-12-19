@@ -6,7 +6,5 @@ from .models import *
 
 def index(request):
     context = dict()
-
     context['votings'] = Voting.objects.all()
-
     return render(request, 'index.html', context)
