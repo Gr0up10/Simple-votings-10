@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ricar.do - golosovanie</title>
+    {% load static %}
+</head>
+<body>
+ <h1>ЙА РАБОТАЙУ</h1>
+ <img src="{% static "img/ricardo.jpg" %}" width="200" height="200" alt="My image">
+
+
+    {% for voting in votings %}
+        <hr>
+        <p>{{ voting.question}} Номер автора: {{ voting.author }}</p>
+        <p>Варианты ответа:</p>
+        {% for option in voting.options %}
+             <form method="get">
+                 <input type="submit" class="btn" value=" {{ option.text }} " name="test">
+            </form>
+        {% endfor %}
+    {% endfor %}
+<audio controls>
+    <source src="{% static "audio/music.mp3" %}">
+</audio>
+
+</body>
+</html>

@@ -100,7 +100,7 @@ celerybeat-schedule
 
 # Rope project settings
 .ropeproject
-
+.idea/
 # Mr Developer
 .mr.developer.cfg
 .project
