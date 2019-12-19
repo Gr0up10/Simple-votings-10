@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 
@@ -13,5 +14,5 @@ class Voting(models.Model):
 
 
 class Option(models.Model):
-    voting = models.ForeignKey(to=Voting,on_delete=models.CASCADE)
+    voting = models.ForeignKey(to=Voting, on_delete=models.CASCADE)
     text = models.CharField(max_length=50)
