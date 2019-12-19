@@ -15,3 +15,11 @@ class Voting(models.Model):
 class Option(models.Model):
     voting = models.ForeignKey(to=Voting,on_delete=models.CASCADE)
     text = models.CharField(max_length=50)
+
+
+class Vote(models.Model):
+    option = models.ForeignKey(to=Option, on_delete=models.CASCADE)
+    number = models.IntegerField()
+
+    def update(self, num):
+        self.number += int(num)
