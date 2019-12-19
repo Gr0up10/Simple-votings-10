@@ -120,7 +120,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = "votings/static"
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
+LOGIN_REDIRECT_URL = '/home/'
+LOGOUT_REDIRECT_URL = '/home/'
+
+# REGISTER_URL = '/register/'
 
 STATICFILES_DIRS = [
     "views/static",
+
 ]

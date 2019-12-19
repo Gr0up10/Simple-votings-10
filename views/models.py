@@ -23,3 +23,4 @@ class Vote(models.Model):
 
     def update(self, num):
         self.number += int(num)
+
