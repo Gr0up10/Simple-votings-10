@@ -22,6 +22,14 @@ class RegisterFormView(FormView):
 
 
 class CreateVoting(forms.Form):
+    #def __init__(self, num):
+     #   super().__init__()
+      #  self.num = num
+    #options = list()
     main_text = forms.CharField(max_length=200, min_length=1, required=True, label='Основной текст')
-    first = forms.CharField(max_length=50, min_length=1, required=True, label='Первый вариант')
-    second = forms.CharField(max_length=50, min_length=1, required=True, label='Второй вариант')
+    first = forms.CharField(max_length=50, min_length=1, required=True, label='Вариант ' + str(1))
+    second = forms.CharField(max_length=50, min_length=1, required=True, label='Вариант ' + str(2))
+
+
+class NumOfOptions(forms.Form):
+    number = forms.IntegerField(max_value=10, min_value=1, required=True, label='Количество вариантов для голосования')

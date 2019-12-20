@@ -7,6 +7,12 @@
 </head>
 <body>
 <h1> Создать голосование на Ricar.Do</h1>
+<form action="/create/" method="GET">
+    {{form_for_num}}
+    {% if mode == 1 %}
+        <input type="submit" value="Ок">
+    {%endif%}
+</form>
 <form action="/create/" method="POST">
     {% for item in form %}
         {{item.label}}: {{item}} <br>

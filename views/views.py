@@ -22,7 +22,18 @@ def index(request):
 
 def create(request):
     context = dict()
-    context['form'] = CreateVoting()
+    context['mode'] = 1
+    context['form_for_num'] = NumOfOptions()
+    if request.method == 'GET':
+        number = request.GET.get('number')
+        print(number)
+        if number:
+            number = int(number)
+            if number > 0 and number <11:
+                context['mode'] = 2
+                context['form'] = CreateVoting()
+                context['form_for_num'] = forms.Form
+
     if request.method == 'POST':
         main_text = request.POST.get('main_text')
         first = request.POST.get('first')
