@@ -11,11 +11,13 @@ def index(request):
     context['votes'] = Vote.objects.all()
 
     if request.method == 'POST':
-        option_id = request.POST.get('radio_answer')
-        if option_id:
-            num = int(Vote.objects.filter(option_id=option_id)[0].number)
-            num +=1
-            Vote.objects.filter(option_id=option_id).update(number=num)
+        option_id = request.POST.getlist('answer')                           # getlist - функция , которая возвращяет list всех answer
+
+        for i in range(len(option_id)):                                      # добавление всех отвтов
+            num = int(Vote.objects.filter(option_id=option_id[i])[0].number)
+            num += 1
+            Vote.objects.filter(option_id=option_id[i]).update(number=num)
+
 
     return render(request, 'index.html', context)
 
