@@ -22,18 +22,18 @@
         <p>{{ voting.question}} Номер автора: {{ voting.author }}</p>
         <p>Варианты ответа:</p>
         {% for option in voting.options %}
-            <li> {{ option.text }}
+        <form action="" method="post">
+            <li> <input type="radio" name="radio_answer" value="{{option.id}}">{{ option.text }}
                 {% for vote in votes %}
                     {% if vote.option_id == option.id %}
-                        Классов: {{vote.number}}
+                <p>Классов: {{vote.number}}</p>
                     {% endif %}
                 {% endfor %}
-                <form action="" method="post">
-                    {% csrf_token %}
-                <input type="submit" class="btn" value="{{ option.id }}" name="vote_button">
-                </form>
             </li>
         {% endfor %}
+                    {% csrf_token %}
+                <input type="submit" class="btn" value="{{voting.id}}" name="vote_button">
+                </form>
     {% endfor %}
 <audio controls>
     <source src="{% static "audio/music.mp3" %}">

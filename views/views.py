@@ -11,7 +11,7 @@ def index(request):
     context['votes'] = Vote.objects.all()
 
     if request.method == 'POST':
-        option_id = request.POST.get('vote_button')
+        option_id = request.POST.get('radio_answer')
         if option_id:
             num = int(Vote.objects.filter(option_id=option_id)[0].number)
             num +=1
@@ -38,8 +38,9 @@ def create(request):
         main_text = request.POST.get('main_text')
         first = request.POST.get('first')
         second = request.POST.get('second')
+        isCheckbox = request.POST.get('isCheckbox')
 
-        voting = Voting(question=main_text, author=1)
+        voting = Voting(question=main_text, author=1 , isCheckbox = isCheckbox)
         voting.save()
 
         option1 = Option(voting=voting, text=first)
