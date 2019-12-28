@@ -1,43 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Ricar.do - golosovanie</title>
-    {% load static %}
-</head>
-<body background="http://media.1777.ru/images/images_processing/022/0222954142393108.jpeg">
- <h1>Ricar.Do - Голосование</h1>
- <h3><a href="/register/"><p>Регистрация</p></a></h3>
- <h3><a href="/login/"><p>Вход</p></a></h3>
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load static %}
+ <h1 class="display-3">Ricar.Do - Голосование</h1>
+<div class="col-sm-11">
+ <br>
+ <br>
  <hr>
- <h3>Создавайте понятные формы</h3>
- <p><font color="#4682B4">Благодаря сайту Ricar.do вы можете проводить опросы и собирать полученные данные в таблицы совершенно бесплатно.</font></p>
- <a href="/create"><p>Создать голосование</p></a>
- <img src="static/img/ricardo.jpg" width="350"
-    height="350" alt=""></p>
-
-
+ <h3>Просто создайте голосование</h3>
+ <p><font color="#5cb85c">Благодаря сайту Ricar.do вы можете проводить опросы и собирать полученные данные совершенно бесплатно.</font></p>
+ <a href="/create/" class="btn btn-success" role="button" aria-pressed="true">Создать голосование</a>
+ <br>
+ <br>
+</p>
+    <h3>Открытые голосования:</h3>
     {% for voting in votings %}
         <hr>
-        <p>{{ voting.question}} Номер автора: {{ voting.author }}</p>
+        <p>{{ voting.question}} <br> Автор: {{ voting.author }}</p>
         <p>Варианты ответа:</p>
-        {% for option in voting.options %}
-            <li> {{ option.text }}
-                {% for vote in votes %}
-                    {% if vote.option_id == option.id %}
-                        Классов: {{vote.number}}
+        <form action="" method="post">
+           {% for option in voting.options %}
+                    {% if voting.isCheckbox%}
+                        <li> <input type="checkbox" name="answer" value="{{option.id}}">
+                    {% else %}
+                        <li> <input type="radio" name="answer" value="{{option.id}}">
                     {% endif %}
-                {% endfor %}
-                <form action="" method="post">
-                    {% csrf_token %}
-                <input type="submit" class="btn" value="{{ option.id }}" name="vote_button">
-                </form>
-            </li>
-        {% endfor %}
-    {% endfor %}
-<audio controls>
-    <source src="{% static "audio/music.mp3" %}">
-</audio>
 
-</body>
-</html> 
+                    {{option.text}}
+                    <p>Классов: {{option.vote_count}}</p>
+                    </li>
+            {% endfor %}
+            {% csrf_token %}
+            <input class="btn btn-primary" type="submit" class="btn" name="vote_button" value="Голосовать">
+        </form>
+    {% endfor %}
+
+</div>
+<div class="col-sm-1" align="right">
+     <img src="{% static "img/ricardo.jpg" %}" width="350"
+    height="350" alt="">
+     <h3>Крутая музыка:</h3>
+ <audio controls>
+    <source src="{% static "audio/music.mp3" %}">
+ </audio>
+</div>
+{% endblock %}
+
+
+<!--
+ Для начала: <a href="/register/" class="btn btn-info" role="button" aria-pressed="true">Регистрация</a> или
+ <a href="/login/" class="btn btn-info" role="button" aria-pressed="true">Вход</a> -->
+

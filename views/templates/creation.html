@@ -1,18 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Ricar.do - golosovanie</title>
-    {% load static %}
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
+
+<script type='text/javascript'>
+        function addField() {
+            var container = document.getElementById("addform");
+            var number = document.getElementById("count");
+            if (Number(number.value) < 12){
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "option" + (Number(number.value)+1);
+                input.placeholder = "Введите свой вариант ответа";
+
+                let sub = document.getElementById("sub");
+                container.removeChild(sub)
+
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+
+                var new_sub = document.createElement("input");
+                new_sub.type = "submit";
+                new_sub.id = "sub";
+                new_sub.class = "btn btn-success"
+                new_sub.value = "Создать голосование";
+                container.appendChild(new_sub);
+
+                number.value = Number(number.value) + 1;
+            } else {
+                alert ('Плюрализм - это, конечно, хорошо. Но вы требуете слишком много вариантов голосования!')
+            }
+        }
+</script>
+
 <h1> Создать голосование на Ricar.Do</h1>
+
+<form action="/create/" method="post" id="addform">
+
+    {% csrf_token %}
+    <br>
+    {{ form }}
+ <br>
+    <input type="button" class="btn btn-primary" value="Добавить вариант ответа" onclick="addField()">
+    <br>
+    <input type="text" name="option1" placeholder="Введите свой вариант ответа">
+    <br>
+    <input type="text" name="option2" placeholder="Введите свой вариант ответа">
+
+    <input type="hidden" name="count" id="count" value="2">
+ <br>
+
+    <input id="sub" type="submit" class="btn btn-success" value="Создать голосование">
+</form>
+
+
+<!--
 <form action="/create/" method="GET">
     {{form_for_num}}
     {% if mode == 1 %}
         <input type="submit" value="Ок">
     {%endif%}
 </form>
+
 <form action="/create/" method="POST">
     {% for item in form %}
         {{item.label}}: {{item}} <br>
@@ -20,9 +68,8 @@
     {% csrf_token %}
     <input type="submit" value="Создать">
 </form>
+
 <br><br>
-<form action="/home/" method="get">
-    <input type="submit" value="На главную">
-</form>
-</body>
-</html>
+-->
+
+{% endblock %}
