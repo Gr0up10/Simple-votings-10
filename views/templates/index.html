@@ -14,12 +14,12 @@
         <br>
         </p>
         <h3>Открытые голосования:</h3>
-        <div class="container">
+        <div class="container d-flex">
 
 
             {% for voting in votings %}
 
-                <div class="card" style="width: 18rem;">
+                <div class="card m-2 w-100 flex-fill" style="width: 18rem;" >
                     <div class="card-body">
                         <h5 class="card-title">{{ voting.question }}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">{{ voting.author }}</h6>
