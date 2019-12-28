@@ -1,22 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Ricar.do - golosovanie</title>
     {% load static %}
 </head>
 <body>
- <h1>Ricar.Do - Голосование</h1>
- <h3><a href="/register/"><p>Регистрация</p></a></h3>
- <h3><a href="/login/"><p>Вход</p></a></h3>
+
+ <h1 class="display-3">Ricar.Do - Голосование</h1>
+ Для начала: <a href="/register/" class="btn btn-primary" role="button" aria-pressed="true">Регистрация</a> или
+ <a href="/login/" class="btn btn-primary" role="button" aria-pressed="true">Вход</a>
+ <br>
+ <br>
+ <h3>Крутая музыка:</h3>
+ <audio controls>
+    <source src="{% static "audio/music.mp3" %}">
+ </audio>
  <hr>
  <h3>Создавайте понятные формы</h3>
  <p><font color="#4682B4">Благодаря сайту Ricar.do вы можете проводить опросы и собирать полученные данные в таблицы совершенно бесплатно.</font></p>
- <a href="/create"><p>Создать голосование</p></a>
- <img src="/static/img/ricardo.jpg" width="350"
+ <a href="/create/" class="btn btn-success" role="button" aria-pressed="true">Создать голосование</a>
+ <br>
+ <br>
+ <img src="static/img/ricardo.jpg" width="350"
     height="350" alt=""></p>
-
-
+ Открытые голосования:
     {% for voting in votings %}
         <hr>
         <p>{{ voting.question}} Номер автора: {{ voting.author }}</p>
@@ -28,20 +37,19 @@
                     {% else %}
                         <li> <input type="radio" name="answer" value="{{option.id}}">
                     {% endif %}
+
                     {{option.text}}
                     <p>Классов: {{option.vote_count}}</p>
                     </li>
             {% endfor %}
             {% csrf_token %}
-            <input type="submit" class="btn" name="vote_button" value="Голосовать">
+            <input class="btn btn-outline-danger" type="submit" class="btn" name="vote_button" value="Голосовать">
         </form>
 
-
-
     {% endfor %}
-<audio controls>
-    <source src="{% static "audio/music.mp3" %}">
-</audio>
 
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html> 
