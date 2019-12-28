@@ -30,19 +30,22 @@
         <hr>
         <p>{{ voting.question}} Номер автора: {{ voting.author }}</p>
         <p>Варианты ответа:</p>
-        {% for option in voting.options %}
-            <li> {{ option.text }}
-                {% for vote in votes %}
-                    {% if vote.option_id == option.id %}
-                        Классов: {{vote.number}}
+        <form action="" method="post">
+           {% for option in voting.options %}
+                    {% if voting.isCheckbox%}
+                        <li> <input type="checkbox" name="answer" value="{{option.id}}">
+                    {% else %}
+                        <li> <input type="radio" name="answer" value="{{option.id}}">
                     {% endif %}
-                {% endfor %}
-                <form action="" method="post">
-                    {% csrf_token %}
-                <input class="btn btn-outline-danger" type="submit" value="Голосовать" name="vote_button">
-                </form>
-            </li>
-        {% endfor %}
+
+                    {{option.text}}
+                    <p>Классов: {{option.vote_count}}</p>
+                    </li>
+            {% endfor %}
+            {% csrf_token %}
+            <input class="btn btn-outline-danger" type="submit" class="btn" name="vote_button" value="Голосовать">
+        </form>
+
     {% endfor %}
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
