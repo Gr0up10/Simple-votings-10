@@ -3,40 +3,64 @@
 {% block content %}
 
 
- <h1 class="display-3">Ricar.Do - Голосование</h1>
-<div class="col-sm-11">
- <br>
- <br>
- <hr>
- <h3>Просто создайте голосование</h3>
- <p><font color="#5cb85c">Благодаря сайту Ricar.do вы можете проводить опросы и собирать полученные данные совершенно бесплатно.</font></p>
- <a href="/create/" class="btn btn-success" role="button" aria-pressed="true">Создать голосование</a>
- <br>
- <br>
-</p>
-    <h3>Открытые голосования:</h3>
-    {% for voting in votings %}
-        <hr>
-        <p>{{ voting.question}} <br> Автор: {{ voting.author }}</p>
-        <p>Варианты ответа:</p>
-        <form action="" method="post">
-           {% for option in voting.options %}
-                    {% if voting.isCheckbox%}
-                        <li> <input type="checkbox" name="answer" value="{{option.id}}">
-                    {% else %}
-                        <li> <input type="radio" name="answer" value="{{option.id}}">
-                    {% endif %}
+    <h1 class="display-3">Ricar.Do - Голосование</h1>
+    <div class="container">
 
-                    {{option.text}}
-                    <p>Классов: {{option.vote_count}}</p>
-                    </li>
+        <h3>Просто создайте голосование</h3>
+        <p><font color="#5cb85c">Благодаря сайту Ricar.do вы можете проводить опросы и собирать полученные данные
+            совершенно бесплатно.</font></p>
+        <a href="/create/" class="btn btn-success" role="button" aria-pressed="true">Создать голосование</a>
+        <br>
+        <br>
+        </p>
+        <h3>Открытые голосования:</h3>
+        <div class="container">
+
+
+            {% for voting in votings %}
+
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ voting.question }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ voting.author }}</h6>
+
+                        <form action="" method="post">
+                            {% for option in voting.options %}
+                                {% if voting.isCheckbox %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="answer"
+                                               value="{{ option.id }}">
+                                        <label class="form-check-label" for="exampleRadios1">
+                                            {{ option.text }}
+                                        </label>
+                                        <p>Классов: {{ option.vote_count }}</p>
+                                    </div>
+                                {% else %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="answer"
+                                               value="{{ option.id }}">
+                                        <label class="form-check-label" for="exampleRadios1">
+                                            {{ option.text }}
+                                        </label>
+                                        <p>Классов: {{ option.vote_count }}</p>
+                                    </div>
+                                {% endif %}
+
+                            {% endfor %}
+                            {% csrf_token %}
+                            <input class="btn btn-primary" type="submit" class="btn" name="vote_button"
+                                   value="Голосовать">
+                        </form>
+
+                    </div>
+                </div>
             {% endfor %}
-            {% csrf_token %}
-            <input class="btn btn-primary" type="submit" class="btn" name="vote_button" value="Голосовать">
-        </form>
-    {% endfor %}
+        </div>
 
-</div>
+
+    </div>
+
+
 
 {% endblock %}
 

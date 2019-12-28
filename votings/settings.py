@@ -129,5 +129,4 @@ LOGOUT_REDIRECT_URL = '/home/'
 
 STATICFILES_DIRS = [
     "views/static",
-
 ]
