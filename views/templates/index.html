@@ -13,7 +13,7 @@
  <h3>Создавайте понятные формы</h3>
  <p><font color="#4682B4">Благодаря сайту Ricar.do вы можете проводить опросы и собирать полученные данные в таблицы совершенно бесплатно.</font></p>
  <a href="/create"><p>Создать голосование</p></a>
- <img src="static/img/ricardo.jpg" width="350"
+ <img src="/static/img/ricardo.jpg" width="350"
     height="350" alt=""></p>
 
 
@@ -21,19 +21,23 @@
         <hr>
         <p>{{ voting.question}} Номер автора: {{ voting.author }}</p>
         <p>Варианты ответа:</p>
-        {% for option in voting.options %}
-            <li> {{ option.text }}
-                {% for vote in votes %}
-                    {% if vote.option_id == option.id %}
-                        Классов: {{vote.number}}
+        <form action="" method="post">
+           {% for option in voting.options %}
+                    {% if voting.isCheckbox%}
+                        <li> <input type="checkbox" name="answer" value="{{option.id}}">
+                    {% else %}
+                        <li> <input type="radio" name="answer" value="{{option.id}}">
                     {% endif %}
-                {% endfor %}
-                <form action="" method="post">
-                    {% csrf_token %}
-                <input type="submit" class="btn" value="{{ option.id }}" name="vote_button">
-                </form>
-            </li>
-        {% endfor %}
+                    {{option.text}}
+                    <p>Классов: {{option.vote_count}}</p>
+                    </li>
+            {% endfor %}
+            {% csrf_token %}
+            <input type="submit" class="btn" name="vote_button" value="Голосовать">
+        </form>
+
+
+
     {% endfor %}
 <audio controls>
     <source src="{% static "audio/music.mp3" %}">
