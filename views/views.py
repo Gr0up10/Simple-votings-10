@@ -40,7 +40,7 @@ def create(request):
         main_text = request.POST.get('main_text')
         first = request.POST.get('first')
         second = request.POST.get('second')
-        isCheckbox = request.POST.get('isCheckbox')
+        isCheckbox = bool(request.POST.get('isCheckbox'))
 
         voting = Voting(question=main_text, author=1 , isCheckbox = isCheckbox)
         voting.save()

@@ -21,42 +21,35 @@
         <hr>
         <p>{{ voting.question}} Номер автора: {{ voting.author }}</p>
         <p>Варианты ответа:</p>
-
-        {% comment %}
-        пример для checkbox
-        {% endcomment %}
-
-           {% for option in voting.options %}
-           <form action="" method="post">
-               <li> <input type="checkbox" name="answer" value="{{option.id}}">{{ option.text }}
-                   {% for vote in votes %}
-                       {% if vote.option_id == option.id %}
-                   <p>Классов: {{vote.number}}</p>
-                       {% endif %}
-                   {% endfor %}
-               </li>
-           {% endfor %}
-                       {% csrf_token %}
-                   <input type="submit" class="btn" name="vote_button" value="{{voting.id}}">
-           </form>
-
-        {% comment %}
-        пример для radio
-        {% endcomment %}
-
-          {% for option in voting.options %}
-          <form action="" method="post">
-              <li> <input type="radio" name="answer" value="{{option.id}}">{{ option.text }}
-                  {% for vote in votes %}
-                      {% if vote.option_id == option.id %}
-                  <p>Классов: {{vote.number}}</p>
-                      {% endif %}
-                  {% endfor %}
-              </li>
-          {% endfor %}
-                      {% csrf_token %}
-                  <input type="submit" class="btn" name="vote_button" value="{{voting.id}}">
-          </form>
+            {% if voting.isCheckbox%}
+                {% for option in voting.options %}
+                <form action="" method="post">
+                    <li> <input type="checkbox" name="answer" value="{{option.id}}">{{ option.text }}
+                        {% for vote in votes %}
+                            {% if vote.option_id == option.id %}
+                        <p>Классов: {{vote.number}}</p>
+                            {% endif %}
+                        {% endfor %}
+                    </li>
+                {% endfor %}
+                            {% csrf_token %}
+                        <input type="submit" class="btn" name="vote_button" value="{{voting.id}}">
+                </form>
+            {% else %}
+               {% for option in voting.options %}
+               <form action="" method="post">
+                   <li> <input type="radio" name="answer" value="{{option.id}}">{{ option.text }}
+                       {% for vote in votes %}
+                           {% if vote.option_id == option.id %}
+                       <p>Классов: {{vote.number}}</p>
+                           {% endif %}
+                       {% endfor %}
+                   </li>
+               {% endfor %}
+                           {% csrf_token %}
+                       <input type="submit" class="btn" name="vote_button" value="{{voting.id}}">
+               </form>
+            {% endif %}
 
 
     {% endfor %}
