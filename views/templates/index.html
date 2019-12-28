@@ -5,7 +5,7 @@
     <title>Ricar.do - golosovanie</title>
     {% load static %}
 </head>
-<body background="http://media.1777.ru/images/images_processing/022/0222954142393108.jpeg">
+<body>
  <h1>Ricar.Do - Голосование</h1>
  <h3><a href="/register/"><p>Регистрация</p></a></h3>
  <h3><a href="/login/"><p>Вход</p></a></h3>
@@ -21,16 +21,36 @@
         <hr>
         <p>{{ voting.question}} Номер автора: {{ voting.author }}</p>
         <p>Варианты ответа:</p>
-        {% for option in voting.options %}
-
+            {% if voting.isCheckbox%}
+                {% for option in voting.options %}
                 <form action="/vote/{{ option.id }}" method="post">
-                    {% csrf_token %}
-                    <li> {{ option.text }} Классов: {{option.vote_count}}
-                    <input type="submit" class="btn" value="Проголосовать">
+                    <li> <input type="checkbox" name="answer" value="{{option.id}}">{{ option.text }}
+                        {% for vote in votes %}
+                            {% if vote.option_id == option.id %}
+                        <p>Классов: {{vote.number}}</p>
+                            {% endif %}
+                        {% endfor %}
                     </li>
+                {% endfor %}
+                            {% csrf_token %}
+                        <input type="submit" class="btn" name="vote_button" value="Голосовать">
                 </form>
+            {% else %}
+               {% for option in voting.options %}
+               <form action="/vote/{{ option.id }}" method="post">
+                   <li> <input type="radio" name="answer" value="{{option.id}}">{{ option.text }}
+                       {% for vote in votes %}
+                           {% if vote.option_id == option.id %}
+                       <p>Классов: {{vote.number}}</p>
+                           {% endif %}
+                       {% endfor %}
+                   </li>
+               {% endfor %}
+                           {% csrf_token %}
+                       <input type="submit" class="btn" name="vote_button" value="Голосовать">
+               </form>
+            {% endif %}
 
-        {% endfor %}
     {% endfor %}
 <audio controls>
     <source src="{% static "audio/music.mp3" %}">

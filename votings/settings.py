@@ -25,7 +25,7 @@ SECRET_KEY = 'j0g9e9p1!7v4t6yt5ma@w!b#o&f^(es+t88kfzs0h4=!se4+mt'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]'] # делает доступным посещение сайта с HEAD =
 
 
 # Application definition

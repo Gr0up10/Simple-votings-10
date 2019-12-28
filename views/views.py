@@ -11,11 +11,13 @@ def index(request):
     context['votes'] = Vote.objects.all()
 
     if request.method == 'POST':
-        option_id = request.POST.get('vote_button')
-        if option_id:
-            num = int(Vote.objects.filter(option_id=option_id)[0].number)
-            num +=1
-            Vote.objects.filter(option_id=option_id).update(number=num)
+        option_id = request.POST.getlist('answer')                           # getlist - функция , которая возвращяет list всех answer
+
+        for i in range(len(option_id)):                                      # добавление всех отвтов
+            num = int(Vote.objects.filter(option_id=option_id[i])[0].number)
+            num += 1
+            Vote.objects.filter(option_id=option_id[i]).update(number=num)
+
 
     return render(request, 'index.html', context)
 
@@ -37,7 +39,8 @@ def create(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
             main_text = request.POST.get('main_text')
-            voting = Voting(question=main_text, author=request.user.id)
+            isCheckbox = bool(request.POST.get('isCheckbox'))
+            voting = Voting(question=main_text, author=request.user.id, isCheckbox = isCheckbox)
 
             voting.save()
             count = request.POST.get('count')

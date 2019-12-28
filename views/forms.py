@@ -22,13 +22,9 @@ class RegisterFormView(FormView):
 
 
 class CreateVoting(forms.Form):
-    #def __init__(self, num):
-     #   super().__init__()
-      #  self.num = num
-    #options = list()
     main_text = forms.CharField(max_length=200, min_length=1, required=True, label='Основной текст')
-    #first = forms.CharField(max_length=50, min_length=1, required=True, label='Вариант ' + str(1))
-    #second = forms.CharField(max_length=50, min_length=1, required=True, label='Вариант ' + str(2))
+    isCheckbox = forms.BooleanField(label='пользователь может выбирать больше 1 пунка как ответ?')
+
 
 
 #class NumOfOptions(forms.Form):

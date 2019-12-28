@@ -8,6 +8,7 @@ class Voting(models.Model):
     question = models.CharField(max_length=250)
     author = models.IntegerField()
     created = models.DateTimeField(auto_now=True)
+    isCheckbox = models.BooleanField(default=False)     #переменная множественного выбора
 
     def options(self):
         return Option.objects.filter(voting=self)
