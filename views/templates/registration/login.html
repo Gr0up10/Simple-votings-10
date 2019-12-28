@@ -1,18 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Авторизация</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
+
     <h1>Авторизация</h1>
     <form action="/login/" method="POST">
         {% csrf_token %}
         {{form}}
-        <input type="submit" value="Войти">
+        <input class="btn btn-success" type="submit" value="Войти">
     </form>
     {% if form.errors %}
         {{form.errors}}
     {% endif %}
-</body>
-</html>
+
+{% endblock %}
