@@ -13,7 +13,7 @@
  <h3>Создавайте понятные формы</h3>
  <p><font color="#4682B4">Благодаря сайту Ricar.do вы можете проводить опросы и собирать полученные данные в таблицы совершенно бесплатно.</font></p>
  <a href="/create"><p>Создать голосование</p></a>
- <img src="static/img/ricardo.jpg" width="350"
+ <img src="/static/img/ricardo.jpg" width="350"
     height="350" alt=""></p>
 
 
@@ -23,7 +23,7 @@
         <p>Варианты ответа:</p>
             {% if voting.isCheckbox%}
                 {% for option in voting.options %}
-                <form action="" method="post">
+                <form action="/vote/{{ option.id }}" method="post">
                     <li> <input type="checkbox" name="answer" value="{{option.id}}">{{ option.text }}
                         {% for vote in votes %}
                             {% if vote.option_id == option.id %}
@@ -33,11 +33,11 @@
                     </li>
                 {% endfor %}
                             {% csrf_token %}
-                        <input type="submit" class="btn" name="vote_button" value="{{voting.id}}">
+                        <input type="submit" class="btn" name="vote_button" value="Голосовать">
                 </form>
             {% else %}
                {% for option in voting.options %}
-               <form action="" method="post">
+               <form action="/vote/{{ option.id }}" method="post">
                    <li> <input type="radio" name="answer" value="{{option.id}}">{{ option.text }}
                        {% for vote in votes %}
                            {% if vote.option_id == option.id %}
@@ -47,10 +47,9 @@
                    </li>
                {% endfor %}
                            {% csrf_token %}
-                       <input type="submit" class="btn" name="vote_button" value="{{voting.id}}">
+                       <input type="submit" class="btn" name="vote_button" value="Голосовать">
                </form>
             {% endif %}
-
 
     {% endfor %}
 <audio controls>

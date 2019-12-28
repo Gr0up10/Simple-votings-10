@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -17,11 +18,14 @@ class Option(models.Model):
     voting = models.ForeignKey(to=Voting,on_delete=models.CASCADE)
     text = models.CharField(max_length=50)
 
+    def vote_count(self):
+        return len(Vote.objects.filter(option=self))
+
+
+
 
 class Vote(models.Model):
     option = models.ForeignKey(to=Option, on_delete=models.CASCADE)
-    number = models.IntegerField()
-
-    def update(self, num):
-        self.number += int(num)
+    user = models.ForeignKey(to=User,on_delete=models.CASCADE)
+    time = models.DateTimeField(auto_now_add=True)
 
