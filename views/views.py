@@ -14,7 +14,7 @@ def index(request):
         option_id = request.POST.getlist('answer')                           # getlist - функция , которая возвращяет list всех answer
         for i in range(len(option_id)):                                      # добавление всех отвтов
             if request.user.is_authenticated:
-                vote1 = Vote(option=Option.objects.get(id=option_id[i]), user=request.user.username)
+                vote1 = Vote(option=Option.objects.get(id=option_id[i]), user=request.user)
                 vote1.save()
             else:
                 return HttpResponse('Сперва войди!')
@@ -24,7 +24,7 @@ def index(request):
 
 def vote(request, option_id):  #    никак не используется !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if request.method == 'POST':
-        vote1 = Vote(option=Option.objects.get(id=option_id), user=request.user.username)
+        vote1 = Vote(option=Option.objects.get(id=option_id), user=request.user)
         vote1.save()
         return HttpResponse('Ваш голос защитан')
 
@@ -41,7 +41,7 @@ def create(request):
         if request.user.is_authenticated:
             main_text = request.POST.get('main_text')
             isCheckbox = bool(request.POST.get('isCheckbox'))
-            voting = Voting(question=main_text, author=request.user.id, isCheckbox = isCheckbox)
+            voting = Voting(question=main_text, author=request.user, isCheckbox = isCheckbox)
 
             voting.save()
             count = request.POST.get('count')
@@ -50,7 +50,7 @@ def create(request):
                     text = request.POST.get('option'+str(i))
                     option = Option(voting = voting, text =text)
                     option.save()
-            return HttpResponse('Ваш вопрос добавлен')
+#            return HttpResponse('Ваш вопрос добавлен')
         else:
             return HttpResponse('Сперва войди!')
 

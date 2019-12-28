@@ -17,7 +17,7 @@
     <h3>Открытые голосования:</h3>
     {% for voting in votings %}
         <hr>
-        <p>{{ voting.question}} Номер автора: {{ voting.author }}</p>
+        <p>{{ voting.question}} <br> Автор: {{ voting.author }}</p>
         <p>Варианты ответа:</p>
         <form action="" method="post">
            {% for option in voting.options %}
