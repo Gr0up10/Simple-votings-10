@@ -21,35 +21,22 @@
         <hr>
         <p>{{ voting.question}} Номер автора: {{ voting.author }}</p>
         <p>Варианты ответа:</p>
-            {% if voting.isCheckbox%}
-                {% for option in voting.options %}
-                <form action="/vote/{{ option.id }}" method="post">
-                    <li> <input type="checkbox" name="answer" value="{{option.id}}">{{ option.text }}
-                        {% for vote in votes %}
-                            {% if vote.option_id == option.id %}
-                        <p>Классов: {{vote.number}}</p>
-                            {% endif %}
-                        {% endfor %}
+        <form action="" method="post">
+           {% for option in voting.options %}
+                    {% if voting.isCheckbox%}
+                        <li> <input type="checkbox" name="answer" value="{{option.id}}">
+                    {% else %}
+                        <li> <input type="radio" name="answer" value="{{option.id}}">
+                    {% endif %}
+                    {{option.text}}
+                    <p>Классов: {{option.vote_count}}</p>
                     </li>
-                {% endfor %}
-                            {% csrf_token %}
-                        <input type="submit" class="btn" name="vote_button" value="Голосовать">
-                </form>
-            {% else %}
-               {% for option in voting.options %}
-               <form action="/vote/{{ option.id }}" method="post">
-                   <li> <input type="radio" name="answer" value="{{option.id}}">{{ option.text }}
-                       {% for vote in votes %}
-                           {% if vote.option_id == option.id %}
-                       <p>Классов: {{vote.number}}</p>
-                           {% endif %}
-                       {% endfor %}
-                   </li>
-               {% endfor %}
-                           {% csrf_token %}
-                       <input type="submit" class="btn" name="vote_button" value="Голосовать">
-               </form>
-            {% endif %}
+            {% endfor %}
+            {% csrf_token %}
+            <input type="submit" class="btn" name="vote_button" value="Голосовать">
+        </form>
+
+
 
     {% endfor %}
 <audio controls>

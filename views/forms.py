@@ -23,7 +23,7 @@ class RegisterFormView(FormView):
 
 class CreateVoting(forms.Form):
     main_text = forms.CharField(max_length=200, min_length=1, required=True, label='Основной текст')
-    isCheckbox = forms.BooleanField(label='пользователь может выбирать больше 1 пунка как ответ?')
+    isCheckbox = forms.BooleanField(label='пользователь может выбирать больше 1 пунка как ответ?', required=False)
 
 
 

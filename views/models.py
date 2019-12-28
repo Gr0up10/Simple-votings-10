@@ -22,8 +22,6 @@ class Option(models.Model):
         return len(Vote.objects.filter(option=self))
 
 
-
-
 class Vote(models.Model):
     option = models.ForeignKey(to=Option, on_delete=models.CASCADE)
     user = models.ForeignKey(to=User,on_delete=models.CASCADE)
