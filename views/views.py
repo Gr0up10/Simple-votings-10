@@ -1,3 +1,5 @@
+import itertools
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponse
 from .models import *
@@ -8,7 +10,15 @@ def index(request):
     context = dict()
 
     context['votings'] = Voting.objects.all()
-    context['options'] = Option.objects.all()
+    ids = dict()
+    # context['optNum'] = len(context['options'])
+
+    for vote in context['votings']:
+        li = vote.options()
+        ids['v' + str(vote.id) + '_min'] = li[0].id
+        print('v' + str(vote.id) + '_min', li[0].id)
+        ids['v' + str(vote.id) + '_max'] = li[len(li)-1].id
+    context['ids'] = ids
 
     if request.method == 'POST':
         option_id = request.POST.getlist('answer')                           # getlist - функция , которая возвращяет list всех answer

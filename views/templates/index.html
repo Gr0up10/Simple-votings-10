@@ -25,43 +25,57 @@
                         <h6 class="card-subtitle mb-2 text-muted">{{ voting.author }}</h6>
 
                         <form action="" method="post">
+
+                            {% with voting.id|stringformat:"i" as id %}
+                            {% with "v"|add:id|add:"_min" as min %}
+                            {% with "v"|add:id|add:"_max" as max %}
+                            {% for key, value in ids.items %}
+                            {% if min == key %}
+                                <input type="hidden" id="opt{{voting.id}}_min" value="{{value}}">
+                            {% endif %}
+                            {% if max == key %}
+                                <input type="hidden" id="opt{{voting.id}}_max" value="{{value}}">
+                            {% endif %}
+                            {% endfor %}
+                            {% endwith %}
+                            {% endwith %}
+                            {% endwith %}
+
                             {% for option in voting.options %}
+                                <div class="form-check">
                                 {% if voting.isCheckbox %}
-                                    <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="answer"
                                                value="{{ option.id }}">
-                                        <label class="form-check-label" for="exampleRadios1">
-                                            {{ option.text }}
-                                        </label>
-                                        <p>Классов: {{ option.vote_count }}</p>
-                                    </div>
                                 {% else %}
-                                    <div class="form-check">
                                         <input class="form-check-input" type="radio" name="answer"
                                                value="{{ option.id }}">
-                                        <label class="form-check-label" for="exampleRadios1">
+                               {% endif %}
+                                       <label id = "{{option.id}}_text" class="form-check-label" for="exampleRadios1">
                                             {{ option.text }}
-                                        </label>
-                                        <p>Классов: {{ option.vote_count }}</p>
+                                       </label>
+                                       <p id="{{option.id}}_votes">Классов: {{ option.vote_count }}</p>
                                     </div>
-                                {% endif %}
 
                             {% endfor %}
+                            <div id="chart_div{{voting.id}}" >Bar chart container</div>
                             {% csrf_token %}
                             <input class="btn btn-primary" type="submit" class="btn" name="vote_button"
                                    value="Голосовать">
+                            <!-- TODO: ГРАФИК ДОЛЖЕН ПОЯВЛЯТЬСЯ ПОСЛЕ ГОЛОСОВАНИЯ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
                         </form>
 
                     </div>
                 </div>
+
             {% endfor %}
         </div>
 
 
     </div>
 
-
-
+{% for voting in votings %}
+<input type="hidden" name="trigger" onload="drawAxisTickColors({{voting.id}});">
+{% endfor %}
 {% endblock %}
 
 
