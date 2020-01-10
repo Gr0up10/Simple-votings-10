@@ -65,7 +65,11 @@ function drawChart(a) {
 
     var options = {
       title: 'Голосование',
-      pieHole: 0.4, 'showRowNumber': true, 'allowHtml': true, 'cssClassNames': cssClassNames
+      pieHole: 0.4,
+      'showRowNumber': true,
+      'allowHtml': true,
+      'cssClassNames': cssClassNames,
+      backgroundColor: '#666',
     };
 
     var chart = new google.visualization.PieChart(document.getElementById('chart_div'+a));
