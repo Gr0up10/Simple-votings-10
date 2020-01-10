@@ -10,6 +10,7 @@ def index(request):
     context = dict()
 
     context['votings'] = Voting.objects.all()
+    context['len'] = len(context['votings'])
     ids = dict()
     # context['optNum'] = len(context['options'])
 
@@ -54,6 +55,7 @@ def create(request):
             voting = Voting(question=main_text, author=request.user, isCheckbox = isCheckbox)
 
             voting.save()
+
             count = request.POST.get('count')
             if count:
                 for i in range(1, int(count)+1):
