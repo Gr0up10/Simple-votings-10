@@ -8,7 +8,15 @@ def index(request):
     context = dict()
 
     context['votings'] = Voting.objects.all()
-    context['options'] = Option.objects.all()
+    context['len'] = len(context['votings'])
+    ids = dict()
+    # context['optNum'] = len(context['options'])
+
+    for vote in context['votings']:
+        li = vote.options()
+        ids['v' + str(vote.id) + '_min'] = li[0].id
+        ids['v' + str(vote.id) + '_max'] = li[len(li)-1].id
+    context['ids'] = ids
 
     if request.method == 'POST':
         option_id = request.POST.getlist('answer')                           # getlist - функция , которая возвращяет list всех answer
@@ -44,6 +52,7 @@ def create(request):
             voting = Voting(question=main_text, author=request.user, isCheckbox = isCheckbox)
 
             voting.save()
+
             count = request.POST.get('count')
             if count:
                 for i in range(1, int(count)+1):
