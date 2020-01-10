@@ -23,9 +23,7 @@
                     <div class="card-body bg-d">
                         <h5 class="card-title">{{ voting.question }}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">{{ voting.author }}</h6>
-
                         <form action="" method="post">
-
                             {% with voting.id|stringformat:"i" as id %}
                             {% with "v"|add:id|add:"_min" as min %}
                             {% with "v"|add:id|add:"_max" as max %}
@@ -60,7 +58,7 @@
                                 {% endfor %}
                                 </td>
                                 <td width="100%">
-                                    <div id="chart_div{{voting.id}}" class="bg-d" style="height: 400px;">Bar chart container</div>
+                                    <div id="chart_div{{voting.id}}" class="bg-d" style="height: 400px;"></div>
                                 </td>
                                 {% csrf_token %}
                             </tr></table>

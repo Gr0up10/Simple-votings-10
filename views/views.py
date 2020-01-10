@@ -1,5 +1,3 @@
-import itertools
-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponse
 from .models import *
@@ -17,7 +15,6 @@ def index(request):
     for vote in context['votings']:
         li = vote.options()
         ids['v' + str(vote.id) + '_min'] = li[0].id
-        print('v' + str(vote.id) + '_min', li[0].id)
         ids['v' + str(vote.id) + '_max'] = li[len(li)-1].id
     context['ids'] = ids
 
