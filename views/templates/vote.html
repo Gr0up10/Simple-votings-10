@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>vote N {{option_id}}</title>
+</head>
+<body>
+
+    <div class="card m-2 w-100 flex-fill" style="width: 18rem;" >
+        <div class="card-body bg-d">
+            <h5 class="card-title">{{ voting.question }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ voting.author }}</h6>
+            <form action="" method="post">
+                {% for option in voting.options %}
+                    {% if voting.isCheckbox %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="answer"
+                                   value="{{ option.id }}">
+                            <label class="form-check-label" for="exampleRadios1">
+                                {{ option.text }}
+                            </label>
+                            <p>Классов: {{ option.vote_count }}</p>
+                        </div>
+                    {% else %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="answer"
+                                   value="{{ option.id }}">
+                            <label class="form-check-label" for="exampleRadios1">
+                                {{ option.text }}
+                            </label>
+                            <p>Классов: {{ option.vote_count }}</p>
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+                {% csrf_token %}
+                <input class="btn btn-primary" type="submit" class="btn" name="vote_button"
+                       value="Голосовать">
+            </form>
+
+        </div>
+    </div>
+
+</body>
+</html>
+
+{% endblock %}
