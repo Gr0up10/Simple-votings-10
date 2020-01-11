@@ -1,4 +1,4 @@
-google.charts.load('current', {packages: ['corechart', 'bar']});
+/*google.charts.load('current', {packages: ['corechart', 'bar']});
 google.charts.setOnLoadCallback(drawAxisTickColors);
 
 function drawAxisTickColors(a) {
@@ -86,4 +86,5 @@ function loadAll(){
         //drawAxisTickColors(i);
         drawChart(i);
     }
-}
+}*/
+

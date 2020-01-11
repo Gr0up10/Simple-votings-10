@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponse, redirect, reverse
 from .models import *
 from .forms import *
+import json
+from django.utils.safestring import SafeString
 
 
 def index(request):
@@ -53,6 +55,18 @@ def vote(request, option_id):
     context['voting'] = Voting.objects.get(id=option_id)  # добавление вопроса по его id
     context['options'] = Option.objects.filter(voting_id=option_id)  # добавление всех его вариантов ответа
     context['option_id'] = option_id  # номер вопроса
+
+    labels = []
+    data = []
+
+    for option in context['options']:
+        labels.append(option.text)
+        data.append(option.vote_count())
+
+    context['labels'] = SafeString(json.dumps(labels))
+    context['data'] = SafeString(json.dumps(data))
+
+
     single_vote(request)
     return render(request, 'vote.html', context)
 
