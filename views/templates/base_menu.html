@@ -35,6 +35,13 @@
         <a class="nav-link" href="/User">Личный кабинет</a>
       </li>
       {% endif%}
+      <li class="nav-item">
+        <form action="#" method="POST">
+          {% csrf_token %}
+          {{ form.flag.label }} : {{ form.flag }}
+          <input type="submit" value="Подтвердить">
+        </form>
+      </li>
     </ul>
   </div>
 </nav>

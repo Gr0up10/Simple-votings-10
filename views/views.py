@@ -16,6 +16,20 @@ def index(request):
     if request.method == 'POST':
         single_vote(request)
 
+        f = ThemeForm(request.POST)
+        if f.is_valid():
+            flag = bool(request.POST.get('flag'))
+            # Сохранение данных
+
+            # Формирование ответа
+            context['flag'] = flag
+            context['form'] = f
+        else:
+            context['form'] = f
+    else:
+        context['nothing_entered'] = True
+        context['form'] = ThemeForm()
+
     if request.method == 'GET':
         for vote in context['votings']:
             li = vote.options()
@@ -76,6 +90,18 @@ def create(request):
         context['form'] = CreateVoting()
 
     if request.method == 'POST':
+
+        f = ThemeForm(request.POST)
+        if f.is_valid():
+            flag = bool(request.POST.get('flag'))
+            # Сохранение данных
+
+            # Формирование ответа
+            context['flag'] = flag
+            context['form'] = f
+        else:
+            context['form'] = f
+
         if request.user.is_authenticated:
             main_text = request.POST.get('main_text')
             isCheckbox = bool(request.POST.get('isCheckbox'))
@@ -93,5 +119,8 @@ def create(request):
             return redirect(vote, voting_id)  # редирект на voting/voting_id
         else:
             return render(request, 'Log_in.html')
+    else:
+        context['nothing_entered'] = True
+        context['form'] = ThemeForm()
 
     return render(request, 'creation.html', context)
