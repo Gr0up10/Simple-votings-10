@@ -30,6 +30,7 @@ urlpatterns = [
                   path('login/', auth_views.LoginView.as_view()),
                   path('logout/', auth_views.LogoutView.as_view()),
                   path('create/', views.create),
-                  path('vote/<int:option_id>', views.vote)
+                  path('vote/<int:option_id>', views.vote),
+                  path('User', views.user),
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
