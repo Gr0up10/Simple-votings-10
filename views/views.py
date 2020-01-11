@@ -8,7 +8,7 @@ from .forms import *
 
 def index(request):
     context = dict()
-
+    context['auth'] = request.user.is_authenticated     # нужно для отображения меню
     context['votings'] = Voting.objects.all()
     ids = dict()
     # context['optNum'] = len(context['options'])
@@ -23,9 +23,6 @@ def index(request):
             ids['v' + str(vote.id) + '_max'] = li[len(li) - 1].id
         context['ids'] = ids
     return render(request, 'index.html', context)
-
-
-
 
 
 def single_vote(request):
@@ -44,12 +41,14 @@ def single_vote(request):
             else:
                 return HttpResponse('Вы уже голосовали')  # красиво оформить вывод
         else:
-            return render(request, 'Log_in.html')
-
+            context = dict()
+            context['auth'] = request.user.is_authenticated  # нужно для отображения меню
+            return render(request, 'Log_in.html', context)
 
 
 def vote(request, option_id):
     context = dict()
+    context['auth'] = request.user.is_authenticated  # нужно для отображения меню
     context['voting'] = Voting.objects.get(id=option_id)  # добавление вопроса по его id
     context['options'] = Option.objects.filter(voting_id=option_id)  # добавление всех его вариантов ответа
     context['option_id'] = option_id  # номер вопроса
@@ -60,6 +59,7 @@ def vote(request, option_id):
 def user(request):
     if request.user.is_authenticated:
         context = dict()
+        context['auth'] = request.user.is_authenticated  # нужно для отображения меню
         votings = Voting.objects.all()
         context['votings'] = votings
     else:
@@ -70,6 +70,7 @@ def user(request):
 
 def create(request):
     context = dict()
+    context['auth'] = request.user.is_authenticated  # нужно для отображения меню
     context['mode'] = 1
     if request.method == 'GET':
         context['form'] = CreateVoting()
