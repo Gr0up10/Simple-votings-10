@@ -69,7 +69,11 @@ function drawChart(a) {
       'showRowNumber': true,
       'allowHtml': true,
       'cssClassNames': cssClassNames,
-      backgroundColor: '#666',
+      //backgroundColor: '#666',
+      backgroundColor: 'transparent',
+        legend         : 'none',
+       chartArea      : {left: 10, top: 10, width: '95%', height: '95%'}
+
     };
 
     var chart = new google.visualization.PieChart(document.getElementById('chart_div'+a));
