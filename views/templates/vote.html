@@ -8,41 +8,57 @@
 </head>
 <body>
 
-    <div class="card m-2 w-100 flex-fill" style="width: 18rem;" >
-        <div class="card-body bg-d">
-            <h5 class="card-title">{{ voting.question }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{ voting.author }}</h6>
-            <form action="" method="post">
+<div class="card m-2 w-100 flex-fill" style="width: 18rem;" >
+    <div class="card-body bg-d">
+        <h5 class="card-title">{{ voting.question }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{ voting.author }}</h6>
+        <form action="" method="POST">
+            {% with voting.id|stringformat:"i" as id %}
+            {% with "v"|add:id|add:"_min" as min %}
+            {% with "v"|add:id|add:"_max" as max %}
+            {% for key, value in ids.items %}
+            {% if min == key %}
+                <input type="hidden" id="opt{{voting.id}}_min" value="{{value}}">
+            {% endif %}
+            {% if max == key %}
+                <input type="hidden" id="opt{{voting.id}}_max" value="{{value}}">
+            {% endif %}
+            {% endfor %}
+            {% endwith %}
+            {% endwith %}
+            {% endwith %}
+            <table width="100%"><tr>
+                <td>
                 {% for option in voting.options %}
+                    <div class="form-check">
                     {% if voting.isCheckbox %}
-                        <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="answer"
                                    value="{{ option.id }}">
-                            <label class="form-check-label" for="exampleRadios1">
-                                {{ option.text }}
-                            </label>
-                            <p>Классов: {{ option.vote_count }}</p>
-                        </div>
                     {% else %}
-                        <div class="form-check">
                             <input class="form-check-input" type="radio" name="answer"
                                    value="{{ option.id }}">
-                            <label class="form-check-label" for="exampleRadios1">
+                   {% endif %}
+                           <label id = "{{option.id}}_text" class="form-check-label" for="exampleRadios1">
                                 {{ option.text }}
-                            </label>
-                            <p>Классов: {{ option.vote_count }}</p>
+                           </label>
+                           <p style="white-space: nowrap" id="{{option.id}}_votes">Классов: {{ option.vote_count }}</p>
                         </div>
-                    {% endif %}
 
                 {% endfor %}
+                </td>
+                <td width="100%">
+                    <div id="chart_div{{voting.id}}" class="bg-d" style="height: 400px;"></div>
+                </td>
                 {% csrf_token %}
-                <input type="hidden" value="{{voting.id}}" name="voting_id">
-                <input class="btn btn-primary" type="submit" class="btn" name="vote_button"
-                       value="Голосовать">
-            </form>
-
-        </div>
+            </tr></table>
+            <input class="btn btn-primary" type="submit" name="vote_button"
+                   value="Голосовать">
+            <input type="hidden" value="{{voting.id}}" name="voting_id">
+            <input class="btn btn-info" type="button" onclick="drawChart({{voting.id}});" value="нарисовать график">
+            <!-- TODO: ГРАФИК ДОЛЖЕН ПОЯВЛЯТЬСЯ ПОСЛЕ ГОЛОСОВАНИЯ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+        </form>
     </div>
+</div>
 
 </body>
 </html>
