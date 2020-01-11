@@ -18,7 +18,11 @@ def index(request):
         ids['v' + str(vote.id) + '_min'] = li[0].id
         ids['v' + str(vote.id) + '_max'] = li[len(li) - 1].id
     context['ids'] = ids
+    single_vote(request)
+    return render(request, 'index.html', context)
 
+
+def single_vote(request):
     if request.method == 'POST':
         option_id = request.POST.getlist('answer')  # getlist - функция , которая возвращяет list всех answer
         voting_id = request.POST.get('voting_id')
@@ -35,28 +39,19 @@ def index(request):
                     return HttpResponse('Сперва войди!')
         else:
             return HttpResponse('Вы уже голосовали')  # красиво оформить вывод
-    return render(request, 'index.html', context)
 
 
 def vote(request, option_id):  # никак не используется !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    context = {}
+    context = dict()
     context['voting'] = Voting.objects.get(id=option_id)  # добавление вопроса по его id
     context['options'] = Option.objects.filter(voting_id=option_id)  # добавление всех его вариантов ответа
     context['option_id'] = option_id  # номер вопроса
-    # обработка
-    if request.method == 'POST':
-        option_id = request.POST.getlist('answer')  # getlist - функция , которая возвращяет list всех answer
-        for i in range(len(option_id)):  # добавление всех отвтов
-            if request.user.is_authenticated:
-                vote1 = Vote(option=Option.objects.get(id=option_id[i]), user=request.user)
-                vote1.save()
-            else:
-                return HttpResponse('Сперва войди!')
+    single_vote(request)
     return render(request, 'vote.html', context)
 
 
 def create(request):
-    context = {}
+    context = dict()
     context['mode'] = 1
 
     if request.method == 'GET':

@@ -36,6 +36,7 @@
 
                 {% endfor %}
                 {% csrf_token %}
+                <input type="hidden" value="{{voting.id}}" name="voting_id">
                 <input class="btn btn-primary" type="submit" class="btn" name="vote_button"
                        value="Голосовать">
             </form>
