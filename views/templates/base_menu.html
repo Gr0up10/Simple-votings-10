@@ -11,38 +11,52 @@
   </div>
 </nav> -->
 <!-- --------------------------- -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark-gray">
-  <a class="navbar-brand"  href="/home">Ricar.do</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<!--<nav class="navbar navbar-expand-lg navbar-dark bg-dark-gray">-->
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
-      </li>
-      {% if auth != True %}
-      <li class="nav-item">
-        <a class="nav-link" href="/register">Регистрация</a>
-      </li>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-xl">
+    <a class="navbar-brand"  href="/home">Ricar.do</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07XL" aria-controls="navbarsExample07XL" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExample07XL">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/home">Главная<span class="sr-only">(current)</span></a>
+        </li>
+        {% if auth != True %}
         <li class="nav-item">
-        <a class="nav-link" href="/login">Вход</a>
-      </li>
-      {% else %}
-       </li>
+          <a class="nav-link" href="/register">Регистрация</a>
+        </li>
         <li class="nav-item">
-        <a class="nav-link" href="/User">Личный кабинет</a>
-      </li>
-      {% endif%}
-      <li class="nav-item">
-        <form action="#" method="POST">
-          {% csrf_token %}
-          {{ form.flag.label }} : {{ form.flag }}
-          <input type="submit" value="Подтвердить">
-        </form>
-      </li>
-    </ul>
+          <a class="nav-link" href="/login">Вход</a>
+        </li>
+        {% else %}
+
+        <li class="nav-item">
+          <a class="nav-link" href="/User">Личный кабинет</a>
+        </li>
+
+        {% endif%}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="dropdown07XL" data-toggle="dropdown" aria-expanded="false">Настройки</a>
+          <div class="dropdown-menu" aria-labelledby="dropdown07XL">
+            <form action="#" method="POST">
+              {% csrf_token %}
+              {{ form.flag.label }} : {{ form.flag }}
+              <input type="submit" value="Подтвердить">
+            </form>
+            <!--<a class="dropdown-item" href="#">Something else here</a>-->
+          </div>
+        </li>
+      </ul>
+      {% if auth == True %}
+      <ul class="navbar-nav">
+        <a class="nav-link" href="/logout">Выйти</a>
+      </ul>
+      {% endif %}
+    </div>
   </div>
 </nav>
 
