@@ -11,6 +11,10 @@ def index(request):
     context['auth'] = request.user.is_authenticated     # нужно для отображения меню
     context['votings'] = Voting.objects.all()
     ids = dict()
+    data = ThemeBD.objects.in_bulk()
+    lent = len(data)
+    print(data[lent].Theme)
+    context['flag'] = (data[lent].Theme)
     # context['optNum'] = len(context['options'])
 
     if request.method == 'POST':
@@ -20,7 +24,8 @@ def index(request):
         if f.is_valid():
             flag = bool(request.POST.get('flag'))
             # Сохранение данных
-
+            item = ThemeBD(Theme= flag)
+            item.save()
             # Формирование ответа
             context['flag'] = flag
             context['form'] = f
@@ -86,6 +91,10 @@ def create(request):
     context = dict()
     context['auth'] = request.user.is_authenticated  # нужно для отображения меню
     context['mode'] = 1
+    data = ThemeBD.objects.in_bulk()
+    lent = len(data)
+    print(data[lent].Theme)
+    context['flag'] = (data[lent].Theme)
     if request.method == 'GET':
         context['form'] = CreateVoting()
 
@@ -95,7 +104,8 @@ def create(request):
         if f.is_valid():
             flag = bool(request.POST.get('flag'))
             # Сохранение данных
-
+            item = ThemeBD(Theme=flag)
+            item.save()
             # Формирование ответа
             context['flag'] = flag
             context['form'] = f
