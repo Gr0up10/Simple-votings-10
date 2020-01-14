@@ -55,6 +55,26 @@ def vote(request, option_id):
     single_vote(request)
     return render(request, 'vote.html', context)
 
+def edit(request, option_id):
+    context = dict()
+    context['auth'] = request.user.is_authenticated
+    if request.method == "POST":
+        if request.POST.get("delete"):
+            context['need_button'] = False
+            context['deleted'] = True
+            voting = Voting.objects.get(id=option_id)
+            voting.delete()
+    elif not (Voting.objects.get(id=option_id)):
+        context['need_button'] = False
+        context['deleted'] = True
+    else:
+        context['need_buttons'] = True
+        context['deleted'] = False
+        context['voting'] = Voting.objects.get(id=option_id)
+        context['options'] = Option.objects.filter(voting_id=option_id)
+        context['option_id'] = option_id
+        single_vote(request)
+    return render(request, 'edit.html', context)
 
 def user(request):
     if request.user.is_authenticated:
