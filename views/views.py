@@ -64,8 +64,29 @@ def edit(request, option_id):
             context['deleted'] = True
             voting = Voting.objects.get(id=option_id)
             voting.delete()
-    elif not (Voting.objects.get(id=option_id)):
-        context['need_button'] = False
+        if request.POST.get("delete_option"):
+            context['need_buttons'] = True
+            context['deleted'] = False
+            context['mode'] = 2
+            context['voting'] = Voting.objects.get(id=option_id)
+            context['options'] = Option.objects.filter(voting_id=option_id)
+            context['option_id'] = option_id
+        if request.POST.get("delete_selected"):
+            for i in request.POST:
+                if not((i == 'csrfmiddlewaretoken') or (i == 'delete_selected')):
+                    id = int(i[7:])
+                    option = Option.objects.get(id=id)
+                    voting = Voting.objects.get(id=option.voting_id)
+                    option.delete()
+                    context['deleted'] = False
+                    context['deleted_option'] = True
+                    if Option.objects.filter(voting_id=voting.id).count() == 0:
+                        voting.delete()
+                        context['deleted'] = True
+                        context['deleted_option'] = False
+                    context['need_buttons'] = False
+    elif (Voting.objects.filter(id=option_id).count() == 0):
+        context['need_buttons'] = False
         context['deleted'] = True
     else:
         context['need_buttons'] = True
@@ -73,6 +94,7 @@ def edit(request, option_id):
         context['voting'] = Voting.objects.get(id=option_id)
         context['options'] = Option.objects.filter(voting_id=option_id)
         context['option_id'] = option_id
+        context['mode'] = 1
         single_vote(request)
     return render(request, 'edit.html', context)
 
