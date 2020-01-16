@@ -1,5 +1,5 @@
 import itertools
-
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponse, redirect, reverse
 from .models import *
@@ -10,7 +10,7 @@ from django.utils.safestring import SafeString
 
 def index(request):
     context = dict()
-    context['auth'] = request.user.is_authenticated     # нужно для отображения меню
+    context['auth'] = request.user.is_authenticated  # нужно для отображения меню
     context['votings'] = Voting.objects.all()
     ids = dict()
     # context['optNum'] = len(context['options'])
@@ -34,7 +34,7 @@ def single_vote(request):
         if request.user.is_authenticated:
             if not (Vote.objects.filter(user=request.user,
                                         voting=Voting.objects.get(
-                                        id=voting_id)).exists()):  # Проверка голосовал ли пользователь в этом голосовании или нет
+                                            id=voting_id)).exists()):  # Проверка голосовал ли пользователь в этом голосовании или нет
                 for i in range(len(option_id)):  # добавление всех ответов
                     vote1 = Vote(option=Option.objects.get(id=option_id[i]),
                                  user=request.user,
@@ -64,7 +64,6 @@ def vote(request, option_id):
 
     context['labels'] = SafeString(json.dumps(labels))
     context['data'] = SafeString(json.dumps(data))
-
 
     single_vote(request)
     return render(request, 'vote.html', context)
@@ -109,3 +108,23 @@ def create(request):
             return render(request, 'Log_in.html')
 
     return render(request, 'creation.html', context)
+
+
+def register(request):
+    context = dict()
+    if request.method == 'POST':
+        form = RegisterFormView(request.POST)
+        context['form'] = form
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            my_password = form.cleaned_data.get('password1')
+            _user = authenticate(username=username, password=my_password)
+            if _user.is_active:
+                login(request, _user)
+                return render(request, 'index.html', context)
+        return render(request, 'register.html', context)
+    else:
+        form = RegisterFormView()
+        context['form'] = form
+        return render(request, 'register.html', context)
