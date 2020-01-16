@@ -8,7 +8,7 @@ from .forms import *
 
 def index(request):
     context = dict()
-    context['auth'] = request.user.is_authenticated     # нужно для отображения меню
+    context['auth'] = request.user.is_authenticated  # нужно для отображения меню
     context['votings'] = Voting.objects.all()
     ids = dict()
     # context['optNum'] = len(context['options'])
@@ -32,7 +32,7 @@ def single_vote(request):
         if request.user.is_authenticated:
             if not (Vote.objects.filter(user=request.user,
                                         voting=Voting.objects.get(
-                                        id=voting_id)).exists()):  # Проверка голосовал ли пользователь в этом голосовании или нет
+                                            id=voting_id)).exists()):  # Проверка голосовал ли пользователь в этом голосовании или нет
                 for i in range(len(option_id)):  # добавление всех ответов
                     vote1 = Vote(option=Option.objects.get(id=option_id[i]),
                                  user=request.user,
@@ -55,12 +55,13 @@ def vote(request, option_id):
     single_vote(request)
     return render(request, 'vote.html', context)
 
+
 def edit(request, option_id):
     context = dict()
     context['auth'] = request.user.is_authenticated
     if request.method == "POST":
         if request.POST.get("delete"):
-            context['need_button'] = False
+            context['need_buttons'] = False
             context['deleted'] = True
             voting = Voting.objects.get(id=option_id)
             voting.delete()
@@ -73,7 +74,7 @@ def edit(request, option_id):
             context['option_id'] = option_id
         if request.POST.get("delete_selected"):
             for i in request.POST:
-                if not((i == 'csrfmiddlewaretoken') or (i == 'delete_selected')):
+                if not ((i == 'csrfmiddlewaretoken') or (i == 'delete_selected')):
                     id = int(i[7:])
                     option = Option.objects.get(id=id)
                     voting = Voting.objects.get(id=option.voting_id)
@@ -85,7 +86,25 @@ def edit(request, option_id):
                         context['deleted'] = True
                         context['deleted_option'] = False
                     context['need_buttons'] = False
-    elif (Voting.objects.filter(id=option_id).count() == 0):
+        if request.POST.get('add_option'):
+            context['need_buttons'] = True
+            context['deleted'] = False
+            context['mode'] = 3
+            context['voting'] = Voting.objects.get(id=option_id)
+            context['options'] = Option.objects.filter(voting_id=option_id)
+            context['count_options'] = context['options'].count()
+            context['option_id'] = option_id
+        if request.POST.get("done"):
+            voting = Voting.objects.get(id=option_id)
+            context['deleted'] = False
+            context['need_buttons'] = False
+            context['add_option'] = True
+            for i in request.POST:
+                if not ((i == 'csrfmiddlewaretoken') or (i == 'done') or (request.POST[i] == '')):
+                    text = request.POST[i]
+                    option = Option(voting=voting, text=text)
+                    option.save()
+    elif Voting.objects.filter(id=option_id).count() == 0:
         context['need_buttons'] = False
         context['deleted'] = True
     else:
@@ -97,6 +116,7 @@ def edit(request, option_id):
         context['mode'] = 1
         single_vote(request)
     return render(request, 'edit.html', context)
+
 
 def user(request):
     if request.user.is_authenticated:
