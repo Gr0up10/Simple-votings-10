@@ -1,11 +1,13 @@
-import itertools
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, HttpResponse, redirect, reverse
-from .models import *
-from .forms import *
 import json
+from django.conf import settings
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.views import LoginView
+from django.core.mail import send_mail
+from django.shortcuts import render, HttpResponse, redirect
 from django.utils.safestring import SafeString
+
+from .forms import *
+from .models import *
 
 
 def index(request):
@@ -128,3 +130,21 @@ def register(request):
         form = RegisterFormView()
         context['form'] = form
         return render(request, 'register.html', context)
+
+
+def login_user(request):
+    context = dict()
+    if request.method == 'POST':
+        if 'remind_password' in request.POST:
+            subject = 'Hello from Django!'
+            message = 'your password is in your mind :p'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = ['super.plastilinium@gmail.com', ]
+            send_mail(subject, message, email_from, recipient_list)
+            context['hints'] = '''Письмо с паролем отправлено на вашу почту.'''
+    context['form'] = LoginView().form_class()
+    return render(request, 'registration/login.html', context)
+
+
+def send_password(request):
+    pass
