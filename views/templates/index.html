@@ -14,12 +14,12 @@
         <br>
         </p>
         <h3>Открытые голосования:</h3>
-        <div class="container d-flex">
+        <!--<div class="container d-flex"> -->
 
 
             {% for voting in votings %}
 
-                <div class="card m-2 w-100 flex-fill" style="width: 18rem;" >
+                <div class="card m-2 w-100 flex-fill" style="width: 500px;" >
                     <div class="card-body bg-d">
                         <h5 class="card-title">{{ voting.question }}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">{{ voting.author }}</h6>
@@ -51,14 +51,14 @@
                             <input class="btn btn-primary" type="submit" name="vote_button"
                                    value="Голосовать">
                             <input type="hidden" value="{{voting.id}}" name="voting_id">
-                            <input class="btn btn-info" type="button" onclick="drawnewchart();" value="нарисовать график">
-                            <!-- TODO: ГРАФИК ДОЛЖЕН ПОЯВЛЯТЬСЯ ПОСЛЕ ГОЛОСОВАНИЯ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                            <!--<input class="btn btn-info" type="button" onclick="drawnewchart();" value="нарисовать график">-->
+
                         </form>
                     </div>
                 </div>
             {% endfor %}
         </div>
-    </div>
+    <!--</div>-->
 <!--<input type="hidden" id="len" value="{{len}}"> -->
 <script>
 for (var i=0; i<={{len}}; i++){
@@ -100,7 +100,6 @@ for (var i=0; i<={{len}}; i++){
      options: {
         legend: {
             labels: {
-                // This more specific font property overrides the global property
                 fontColor: 'white'
             }
         }
