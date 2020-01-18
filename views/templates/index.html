@@ -2,49 +2,79 @@
 
 {% block content %}
 
-{% load static %}
- <h1 class="display-3">Ricar.Do - Голосование</h1>
-<div class="col-sm-11">
- <br>
- <br>
- <hr>
- <h3>Просто создайте голосование</h3>
- <p><font color="#5cb85c">Благодаря сайту Ricar.do вы можете проводить опросы и собирать полученные данные совершенно бесплатно.</font></p>
- <a href="/create/" class="btn btn-success" role="button" aria-pressed="true">Создать голосование</a>
- <br>
- <br>
-</p>
-    <h3>Открытые голосования:</h3>
-    {% for voting in votings %}
-        <hr>
-        <p>{{ voting.question}} <br> Автор: {{ voting.author }}</p>
-        <p>Варианты ответа:</p>
-        <form action="" method="post">
-           {% for option in voting.options %}
-                    {% if voting.isCheckbox%}
-                        <li> <input type="checkbox" name="answer" value="{{option.id}}">
-                    {% else %}
-                        <li> <input type="radio" name="answer" value="{{option.id}}">
-                    {% endif %}
 
-                    {{option.text}}
-                    <p>Классов: {{option.vote_count}}</p>
-                    </li>
+    <h1 class="display-3">Ricar.Do - Голосование</h1>
+    <div class="container">
+
+        <h3>Просто создайте голосование</h3>
+        <p><font color="#5cb85c">Благодаря сайту Ricar.do вы можете проводить опросы и собирать полученные данные
+            совершенно бесплатно.</font></p>
+        <a href="/create/" class="btn btn-success" role="button" aria-pressed="true">Создать голосование</a>
+        <br>
+        <br>
+        </p>
+        <h3>Открытые голосования:</h3>
+        <div class="container d-flex">
+
+
+            {% for voting in votings %}
+
+                <div class="card m-2 w-100 flex-fill" style="width: 18rem;" >
+                    <div class="card-body bg-d">
+                        <h5 class="card-title">{{ voting.question }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ voting.author }}</h6>
+                        <form action="" method="POST">
+                            {% with voting.id|stringformat:"i" as id %}
+                            {% with "v"|add:id|add:"_min" as min %}
+                            {% with "v"|add:id|add:"_max" as max %}
+                            {% for key, value in ids.items %}
+                            {% if min == key %}
+                                <input type="hidden" id="opt{{voting.id}}_min" value="{{value}}">
+                            {% endif %}
+                            {% if max == key %}
+                                <input type="hidden" id="opt{{voting.id}}_max" value="{{value}}">
+                            {% endif %}
+                            {% endfor %}
+                            {% endwith %}
+                            {% endwith %}
+                            {% endwith %}
+                            <table width="100%"><tr>
+                                <td>
+                                {% for option in voting.options %}
+                                    <div class="form-check">
+                                    {% if voting.isCheckbox %}
+                                            <input class="form-check-input" type="checkbox" name="answer"
+                                                   value="{{ option.id }}">
+                                    {% else %}
+                                            <input class="form-check-input" type="radio" name="answer"
+                                                   value="{{ option.id }}">
+                                   {% endif %}
+                                           <label id = "{{option.id}}_text" class="form-check-label" for="exampleRadios1">
+                                                {{ option.text }}
+                                           </label>
+                                           <p style="white-space: nowrap" id="{{option.id}}_votes">Классов: {{ option.vote_count }}</p>
+                                        </div>
+
+                                {% endfor %}
+                                </td>
+                                <td width="100%">
+                                    <div id="chart_div{{voting.id}}" class="bg-d" style="height: 400px;"></div>
+                                </td>
+                                {% csrf_token %}
+                            </tr></table>
+                            <input class="btn btn-primary" type="submit" name="vote_button"
+                                   value="Голосовать">
+                            <input type="hidden" value="{{voting.id}}" name="voting_id">
+                            <input class="btn btn-info" type="button" onclick="drawChart({{voting.id}});" value="нарисовать график">
+                            <!-- TODO: ГРАФИК ДОЛЖЕН ПОЯВЛЯТЬСЯ ПОСЛЕ ГОЛОСОВАНИЯ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                        </form>
+                    </div>
+                </div>
             {% endfor %}
-            {% csrf_token %}
-            <input class="btn btn-primary" type="submit" class="btn" name="vote_button" value="Голосовать">
-        </form>
-    {% endfor %}
+        </div>
+    </div>
 
-</div>
-<div class="col-sm-1" align="right">
-     <img src="{% static "img/ricardo.jpg" %}" width="350"
-    height="350" alt="">
-     <h3>Крутая музыка:</h3>
- <audio controls>
-    <source src="{% static "audio/music.mp3" %}">
- </audio>
-</div>
+<input type="hidden" id="len" value="{{len}}">
 {% endblock %}
 
 
