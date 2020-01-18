@@ -16,20 +16,6 @@
         <h5 class="card-title">{{ voting.question }}</h5>
         <h6 class="card-subtitle mb-2 text-muted">{{ voting.author }}</h6>
         <form action="" method="POST">
-            {% with voting.id|stringformat:"i" as id %}
-            {% with "v"|add:id|add:"_min" as min %}
-            {% with "v"|add:id|add:"_max" as max %}
-            {% for key, value in ids.items %}
-            {% if min == key %}
-                <input type="hidden" id="opt{{voting.id}}_min" value="{{value}}">
-            {% endif %}
-            {% if max == key %}
-                <input type="hidden" id="opt{{voting.id}}_max" value="{{value}}">
-            {% endif %}
-            {% endfor %}
-            {% endwith %}
-            {% endwith %}
-            {% endwith %}
             <table width="100%"><tr>
                 <td>
                 {% for option in voting.options %}
@@ -78,14 +64,35 @@
             labels: mylabels,
             datasets: [{
                 label: 'My First dataset',
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: mydata
-            }]
-        },
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+     data: mydata
+     }]
+     },
 
-        // Configuration options go here
-        options: {}
+     // Configuration options go here
+     options: {
+        legend: {
+            labels: {
+                // This more specific font property overrides the global property
+                fontColor: 'white'
+            }
+        }
+    }
     });
 </script>
 

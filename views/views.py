@@ -12,17 +12,32 @@ def index(request):
     context = dict()
     context['auth'] = request.user.is_authenticated     # нужно для отображения меню
     context['votings'] = Voting.objects.all()
+    context['len'] = len(context['votings'])
     ids = dict()
     # context['optNum'] = len(context['options'])
+    la = list()
+    da = list()
+    for i in range(context['len']):
+        context['options'] = context['votings'][i].options()
+        print(context['options'])
+
+        labels = []
+        data = []
+
+        for option in context['options']:
+            labels.append(option.text)
+            data.append(option.vote_count())
+
+        la.append(SafeString(json.dumps(labels)))
+        da.append(SafeString(json.dumps(data)))
+
+    context['la'] = la
+    context['da'] = da
 
     if request.method == 'POST':
         single_vote(request)
 
     if request.method == 'GET':
-        for vote in context['votings']:
-            li = vote.options()
-            ids['v' + str(vote.id) + '_min'] = li[0].id
-            ids['v' + str(vote.id) + '_max'] = li[len(li) - 1].id
         context['ids'] = ids
     return render(request, 'index.html', context)
 
