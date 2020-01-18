@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Пользователь: {{ user }}</h1>
+<a class="btn btn-primary" href="/password" role="button">изменить пароль</a>
+<br>
+<h2>Мои голосования</h2>
+{% for voting in votings %}
+{%if  voting.author == user%}
+        <hr>
+
+        <p>{{ voting.question}} <br> Автор: {{ voting.author }}</p>
+        <p>Варианты ответа:</p>
+        <form action="" method="post">
+           {% for option in voting.options %}
+
+                    {% if voting.isCheckbox%}
+                        <li name="answer" value="{{option.id}}">
+                    {% else %}
+                        <li name="answer" value="{{option.id}}" >
+                    {% endif %}
+
+                    {{option.text}}
+                    <p>Классов: {{option.vote_count}}</p>
+                    </li>
+
+
+            {% endfor %}
+            {% csrf_token %}
+            <a class="btn btn-primary" href="/edit/{{ voting.id }}" class="btn" name="vote_button">Редактировать</a>
+        </form>
+
+
+{%endif%}
+    {% endfor %}
+
+{% endblock %}
