@@ -218,5 +218,7 @@ def password_change(request):
             form.save()
             update_session_auth_hash(request, form.user)
             return redirect('/login')
+        else
+            return render(request, 'password.html', context)
     else:
         return render(request, 'password.html', context)
