@@ -13,6 +13,13 @@ def index(request):
     context = dict()
     context['auth'] = request.user.is_authenticated  # нужно для отображения меню
     context['votings'] = Voting.objects.all()
+    indexes = []
+
+    for voting in context['votings']:
+        indexes.append(int(voting.id))
+
+    context['indexes'] = indexes
+
     context['len'] = len(context['votings'])
     ids = dict()
     # context['optNum'] = len(context['options'])

@@ -21,7 +21,8 @@
 
                 <div class="card m-2 w-100 flex-fill" style="width: 500px;" >
                     <div class="card-body bg-d">
-                        <h5 class="card-title">{{ voting.question }}</h5>
+                        <a href="/vote/{{ voting.id }}"  class="h5 card-title">{{ voting.question }}</a>
+
                         <h6 class="card-subtitle mb-2 text-muted">{{ voting.author }}</h6>
                         <form action="" method="POST">
                             <table width="100%"><tr>
@@ -63,12 +64,17 @@
     <!--</div>-->
 <!--<input type="hidden" id="len" value="{{len}}"> -->
 <script>
-for (var i=0; i<={{len}}; i++){
+
+let indexes = {{ indexes }};
+
+indexes.forEach(function(i, item, arr) {
+
     var ls = [{% for item in la %} {{item}}, {% endfor %}];
     var ds = [{% for item in da %} {{item}}, {% endfor %}];
-     var mylabels = ls[i];
-     var mydata = ds[i];
-     var ctx = document.getElementById('myChart'+(i+1).toString()).getContext('2d');
+     var mylabels = ls[item];
+     var mydata = ds[item];
+     console.log('myChart'+(i).toString());
+     var ctx = document.getElementById('myChart'+(i).toString()).getContext('2d');
      var chart = new Chart(ctx, {
      // The type of chart we want to create
      type: 'pie',
@@ -107,7 +113,7 @@ for (var i=0; i<={{len}}; i++){
         }
     }
      });
- }
+ });
 </script>
 
 {% endblock %}
