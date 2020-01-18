@@ -42,12 +42,21 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="dropdown07XL" data-toggle="dropdown" aria-expanded="false">Настройки</a>
           <div class="dropdown-menu" aria-labelledby="dropdown07XL">
-            <form action="#" method="POST">
+
+              <form action="theme/" method="POST">
               {% csrf_token %}
-              {{ form.flag.label }} : {{ form.flag }}
-              <input type="submit" value="Подтвердить">
-            </form>
-            <!--<a class="dropdown-item" href="#">Something else here</a>-->
+                  <input type="hidden" name="flag" value="dark" CHECKED>
+                  <input type="submit" class="btn btn-dark" value="Dark theme"></input>
+              </form>
+
+              <form action="theme/" method="POST">
+                  {% csrf_token %}
+                  <input type="hidden" name="flag" value="light" CHECKED>
+                  <input type="submit" class="btn btn-light" value="Light theme"></input>
+              </form>
+
+
+              <!--<a class="dropdown-item" href="#">Something else here</a>-->
           </div>
         </li>
       </ul>

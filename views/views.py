@@ -6,6 +6,15 @@ from .models import *
 from .forms import *
 
 
+def theme_change(request):
+    if request.method == "POST":
+        print(request.POST)
+        if request.POST.get('flag') == 'dark':
+            print('flag is dark')
+        elif request.POST.get('flag') == 'light':
+            print('flag is light')
+    return HttpResponse('OK')
+
 def index(request):
     context = dict()
     context['auth'] = request.user.is_authenticated     # нужно для отображения меню
