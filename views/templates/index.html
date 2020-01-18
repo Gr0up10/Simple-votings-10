@@ -17,104 +17,122 @@
         <!--<div class="container d-flex"> -->
 
 
-            {% for voting in votings %}
+        {% for voting in votings %}
 
-                <div class="card m-2 w-100 flex-fill" style="width: 500px;" >
-                    <div class="card-body bg-d">
-                        <a href="/vote/{{ voting.id }}"  class="h5 card-title">{{ voting.question }}</a>
+            <div class="card m-2 w-100 flex-fill" style="width: 500px;">
+                <div class="card-body bg-d">
+                    <a href="/vote/{{ voting.id }}" class="h5 card-title">{{ voting.question }}</a>
 
-                        <h6 class="card-subtitle mb-2 text-muted">{{ voting.author }}</h6>
-                        <form action="" method="POST">
-                            <table width="100%"><tr>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ voting.author }}</h6>
+                    <form action="" method="POST">
+                        <table width="100%">
+                            <tr>
                                 <td>
-                                {% for option in voting.options %}
-                                    <div class="form-check">
-                                    {% if voting.isCheckbox %}
-                                            <input class="form-check-input" type="checkbox" name="answer"
-                                                   value="{{ option.id }}">
-                                    {% else %}
-                                            <input class="form-check-input" type="radio" name="answer"
-                                                   value="{{ option.id }}">
-                                   {% endif %}
-                                           <label id = "{{option.id}}_text" class="form-check-label" for="exampleRadios1">
+                                    {% for option in voting.options %}
+                                        <div class="form-check">
+                                            {% if voting.isCheckbox %}
+                                                <input class="form-check-input" type="checkbox" name="answer"
+                                                       value="{{ option.id }}">
+                                            {% else %}
+                                                <input class="form-check-input" type="radio" name="answer"
+                                                       value="{{ option.id }}">
+                                            {% endif %}
+                                            <label id="{{ option.id }}_text" class="form-check-label"
+                                                   for="exampleRadios1">
                                                 {{ option.text }}
-                                           </label>
-                                           <p style="white-space: nowrap" id="{{option.id}}_votes">Классов: {{ option.vote_count }}</p>
+                                            </label>
+                                            <p style="white-space: nowrap" id="{{ option.id }}_votes">
+                                                Классов: {{ option.vote_count }}</p>
                                         </div>
 
-                                {% endfor %}
+                                    {% endfor %}
                                 </td>
                                 <td width="100%">
-                                    <canvas id="myChart{{voting.id}}"></canvas>
+                                    <canvas id="myChart{{ voting.id }}"></canvas>
                                 </td>
                                 {% csrf_token %}
-                            </tr></table>
+                            </tr>
+                        </table>
+                        <div class="row">
+
                             <input class="btn btn-primary" type="submit" name="vote_button"
                                    value="Голосовать">
-                            <input type="hidden" value="{{voting.id}}" name="voting_id">
-                            <!--<input class="btn btn-info" type="button" onclick="drawnewchart();" value="нарисовать график">-->
 
-                            <!--<input class="btn btn-info" type="button" value="Изменить"> -->
-                            <!-- TODO: ГРАФИК ДОЛЖЕН ПОЯВЛЯТЬСЯ ПОСЛЕ ГОЛОСОВАНИЯ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-                        </form>
-                    </div>
+                            {% if voting.author == user %}
+
+                                <a class="btn btn-primary" href="/edit/{{ voting.id }}" class="btn"
+                                   name="vote_button">Редактировать</a>
+
+                               
+                            {% endif %}
+
+
+                        </div>
+
+                        <input type="hidden" value="{{ voting.id }}" name="voting_id">
+                        <!--<input class="btn btn-info" type="button" onclick="drawnewchart();" value="нарисовать график">-->
+
+                        <!--<input class="btn btn-info" type="button" value="Изменить"> -->
+                        <!-- TODO: ГРАФИК ДОЛЖЕН ПОЯВЛЯТЬСЯ ПОСЛЕ ГОЛОСОВАНИЯ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                    </form>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
+    </div>
     <!--</div>-->
-<!--<input type="hidden" id="len" value="{{len}}"> -->
-<script>
+    <!--<input type="hidden" id="len" value="{{len}}"> -->
+    <script>
 
-let indexes = {{ indexes }};
+        let indexes = {{ indexes }};
 
-indexes.forEach(function(i, item, arr) {
+        indexes.forEach(function (i, item, arr) {
 
-    var ls = [{% for item in la %} {{item}}, {% endfor %}];
-    var ds = [{% for item in da %} {{item}}, {% endfor %}];
-     var mylabels = ls[item];
-     var mydata = ds[item];
-     console.log('myChart'+(i).toString());
-     var ctx = document.getElementById('myChart'+(i).toString()).getContext('2d');
-     var chart = new Chart(ctx, {
-     // The type of chart we want to create
-     type: 'pie',
+            var ls = [{% for item in la %} {{item}}, {% endfor %}];
+            var ds = [{% for item in da %} {{item}}, {% endfor %}];
+            var mylabels = ls[item];
+            var mydata = ds[item];
+            console.log('myChart' + (i).toString());
+            var ctx = document.getElementById('myChart' + (i).toString()).getContext('2d');
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'pie',
 
-     // The data for our dataset
-     data: {
-     labels: mylabels,
-     datasets: [{
-     label: 'My First dataset',
-     backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-     data: mydata
-     }]
-     },
+                // The data for our dataset
+                data: {
+                    labels: mylabels,
+                    datasets: [{
+                        label: 'My First dataset',
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        data: mydata
+                    }]
+                },
 
-     // Configuration options go here
-     options: {
-        legend: {
-            labels: {
-                fontColor: 'white'
-            }
-        }
-    }
-     });
- });
-</script>
+                // Configuration options go here
+                options: {
+                    legend: {
+                        labels: {
+                            fontColor: 'white'
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 
 {% endblock %}
 
