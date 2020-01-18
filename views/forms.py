@@ -1,5 +1,5 @@
 from django.views.generic.edit import FormView
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm ,PasswordChangeForm
 from django import forms
 
 

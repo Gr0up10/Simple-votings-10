@@ -6,6 +6,7 @@ from .models import *
 from .forms import *
 import json
 from django.utils.safestring import SafeString
+from django.contrib.auth import update_session_auth_hash
 
 
 def index(request):
@@ -109,3 +110,17 @@ def create(request):
             return render(request, 'Log_in.html')
 
     return render(request, 'creation.html', context)
+
+@login_required()
+def password_change(request):
+    context = dict()
+    context['auth'] = request.user.is_authenticated  # нужно для отображения меню
+    context['form'] = PasswordChangeForm(request.user)
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect('/login')
+    else:
+        return render(request, 'password.html', context)

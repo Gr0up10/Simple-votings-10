@@ -2,6 +2,7 @@
 
 {% block content %}
 <h1>Пользователь: {{ user }}</h1>
+<a class="btn btn-primary" href="/password" role="button">изменить пароль</a>
 <br>
 <h2>Мои голосования</h2>
 {% for voting in votings %}
