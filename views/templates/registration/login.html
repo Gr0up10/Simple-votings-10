@@ -7,7 +7,10 @@
 	{% csrf_token %}
 	{{form}}
 	<input class="btn btn-success" type="submit" value="Войти" name="sign_in">
-	<input class="btn btn-success" type="submit" value="Напомнить пароль" name="remind_password">
+</form>
+<form method="POST">
+	{% csrf_token %}
+	<a class="btn btn-success" type="submit" href="/password-reset/" name="remind_password">Восстановить пароль</a>
 </form>
 {% if form.errors %}
 {{form.errors}}

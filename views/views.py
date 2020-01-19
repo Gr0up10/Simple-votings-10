@@ -134,17 +134,17 @@ def register(request):
 
 def login_user(request):
     context = dict()
+    form = LoginView().form_class()
     if request.method == 'POST':
-        if 'remind_password' in request.POST:
-            subject = 'Hello from Django!'
-            message = 'your password is in your mind :p'
-            email_from = settings.EMAIL_HOST_USER
-            recipient_list = ['super.plastilinium@gmail.com', ]
-            send_mail(subject, message, email_from, recipient_list)
-            context['hints'] = '''Письмо с паролем отправлено на вашу почту.'''
-    context['form'] = LoginView().form_class()
+        username = request.POST['username']
+        password = request.POST['password']
+        user_ = authenticate(request, username=username, password=password)
+        if user_ is not None:
+            login(request, user_)
+            return redirect('/home')
+        else:
+            context['form'] = form
+            return render(request, 'registration/login.html', context)
+            pass
+    context['form'] = form
     return render(request, 'registration/login.html', context)
-
-
-def send_password(request):
-    pass

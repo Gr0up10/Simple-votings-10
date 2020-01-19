@@ -120,14 +120,7 @@ LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/home/'
 
 EMAIL_HOST = 'localhost'
-# EMAIL_HOST_USER = 'Herr_der_Qual'
-# DEFAULT_EMAIL_FROM = 'rainbowshardofdeath@gmail.com'
-# EMAIL_HOST_PASSWORD = 'EifersuchtSehnsucht921'
 EMAIL_PORT = 1025
-# EMAIL_USE_TLS = False
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# CRISPY_TEMPLATE_PACK = 'bootstrap4'
-# REGISTER_URL = '/register/'
 
 STATICFILES_DIRS = [
     "views/static",
