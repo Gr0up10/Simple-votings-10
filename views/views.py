@@ -8,12 +8,17 @@ from .forms import *
 
 def theme_change(request):
     if request.method == "POST":
-        print(request.POST)
-        if request.POST.get('flag') == 'dark':
+        if request.POST.get('theme_flag') == 'dark':
             print('flag is dark')
-        elif request.POST.get('flag') == 'light':
+            flag = True
+            item = ThemeBD(Theme=flag)
+            item.save()
+        elif request.POST.get('theme_flag') == 'light':
             print('flag is light')
-    return HttpResponse('OK')
+            flag = False
+            item = ThemeBD(Theme=flag)
+            item.save()
+    return render(request, 'theme.html')
 
 def index(request):
     context = dict()
@@ -23,27 +28,25 @@ def index(request):
     data = ThemeBD.objects.in_bulk()
     lent = len(data)
     print(data[lent].Theme)
-    context['flag'] = (data[lent].Theme)
+    context['theme_flag'] = (data[lent].Theme)
     # context['optNum'] = len(context['options'])
 
     if request.method == 'POST':
         single_vote(request)
 
-        f = ThemeForm(request.POST)
-        if f.is_valid():
-            flag = bool(request.POST.get('flag'))
-            # Сохранение данных
-            item = ThemeBD(Theme= flag)
-            item.save()
-            # Формирование ответа
-            context['flag'] = flag
-            context['form'] = f
-        else:
-            context['form'] = f
+    #     f = ThemeForm(request.POST)
+    #     if f.is_valid():
+    #         flag = bool(request.POST.get('flag'))
+    #         # Сохранение данных
+    #         item = ThemeBD(Theme= flag)
+    #         item.save()
+    #         # Формирование ответа
+    #         context['flag'] = flag
+    #         context['form'] = f
+    #     else:
+    #         context['form'] = f
     else:
         context['nothing_entered'] = True
-        context['form'] = ThemeForm()
-
     if request.method == 'GET':
         for vote in context['votings']:
             li = vote.options()
@@ -103,23 +106,11 @@ def create(request):
     data = ThemeBD.objects.in_bulk()
     lent = len(data)
     print(data[lent].Theme)
-    context['flag'] = (data[lent].Theme)
+    context['theme_flag'] = (data[lent].Theme)
     if request.method == 'GET':
         context['form'] = CreateVoting()
 
     if request.method == 'POST':
-
-        f = ThemeForm(request.POST)
-        if f.is_valid():
-            flag = bool(request.POST.get('flag'))
-            # Сохранение данных
-            item = ThemeBD(Theme=flag)
-            item.save()
-            # Формирование ответа
-            context['flag'] = flag
-            context['form'] = f
-        else:
-            context['form'] = f
 
         if request.user.is_authenticated:
             main_text = request.POST.get('main_text')
@@ -140,6 +131,5 @@ def create(request):
             return render(request, 'Log_in.html')
     else:
         context['nothing_entered'] = True
-        context['form'] = ThemeForm()
 
     return render(request, 'creation.html', context)

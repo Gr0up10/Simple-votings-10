@@ -16,7 +16,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-xl">
     <a class="navbar-brand"  href="/home">Ricar.do</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07XL" aria-controls="navbarsExample07XL" aria-expanded="false" aria-label="Toggle navigation">
+    <button aria-controls="navbarsExample07XL" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarsExample07XL" data-toggle="collapse" type="button">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -40,22 +40,24 @@
 
         {% endif%}
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdown07XL" data-toggle="dropdown" aria-expanded="false">Настройки</a>
-          <div class="dropdown-menu" aria-labelledby="dropdown07XL">
-
-              <form action="theme/" method="POST">
-              {% csrf_token %}
-                  <input type="hidden" name="flag" value="dark" CHECKED>
-                  <input type="submit" class="btn btn-dark" value="Dark theme"></input>
+          <a aria-expanded="false" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="dropdown07XL">Настройки</a>
+          <div aria-labelledby="dropdown07XL" class="dropdown-menu">
+              <p>Выберете оформление:</p>
+                <div class="col">
+              <form action="/theme/" method="POST">
+                {% csrf_token %}
+                  <input CHECKED name="theme_flag" type="hidden" value="dark">
+                  <input class="btn btn-dark" type="submit" value="Темная тема"></input>
               </form>
-
-              <form action="theme/" method="POST">
+          </div>
+              <div class="col mt-3">
+              <form action="/theme/" method="POST">
                   {% csrf_token %}
-                  <input type="hidden" name="flag" value="light" CHECKED>
-                  <input type="submit" class="btn btn-light" value="Light theme"></input>
+                  <input CHECKED name="theme_flag" type="hidden" value="light">
+                  <input class="btn btn-light" type="submit" value="Светлая тема"></input>
               </form>
 
-
+              </div>
               <!--<a class="dropdown-item" href="#">Something else here</a>-->
           </div>
         </li>
