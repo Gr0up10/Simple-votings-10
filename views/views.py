@@ -1,7 +1,7 @@
 import json
 from django.conf import settings
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordResetView
 from django.core.mail import send_mail
 from django.shortcuts import render, HttpResponse, redirect
 from django.utils.safestring import SafeString
@@ -145,6 +145,16 @@ def login_user(request):
         else:
             context['form'] = form
             return render(request, 'registration/login.html', context)
-            pass
     context['form'] = form
     return render(request, 'registration/login.html', context)
+
+
+def reset(request):
+    context = dict()
+    form = PasswordResetView().form_class
+    if request.method == 'POST':
+        # send_mail(str(PasswordResetView().subject_template_name),
+        #           str(PasswordResetView().email_template_name))
+        return HttpResponse(PasswordResetView().subject_template_name)
+    context['form'] = form
+    return render(request, 'password-reset/reset.html', context)
