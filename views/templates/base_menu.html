@@ -11,9 +11,13 @@
   </div>
 </nav> -->
 <!-- --------------------------- -->
+
 <!--<nav class="navbar navbar-expand-lg navbar-dark bg-dark-gray">-->
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    {% load static %}
+  <img src="{% static "img/ricardo.jpg" %}" width="50"
+                             height="50" alt="">
   <div class="container-xl">
     <a class="navbar-brand"  href="/home">Ricar.do</a>
     <button aria-controls="navbarsExample07XL" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarsExample07XL" data-toggle="collapse" type="button">
@@ -69,8 +73,8 @@
       {% endif %}
     </div>
   </div>
-</nav>
 
+</nav>
 
 
 <!-- TODO: добавить class="active", когда страница активна -->

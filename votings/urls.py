@@ -26,12 +26,15 @@ urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('', views.index),
                   path('home/', views.index),
-                  path('register/', RegisterFormView.as_view()),
+                  path('register/', views.register),
                   path('login/', auth_views.LoginView.as_view()),
                   path('logout/', auth_views.LogoutView.as_view()),
                   path('create/', views.create),
                   path('vote/<int:option_id>', views.vote),
                   path('User', views.user),
                   path('theme/', views.theme_change),
+                  path('password', views.password_change),
+                  path('edit/<int:option_id>', views.edit),
+
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

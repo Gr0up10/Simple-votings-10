@@ -2,6 +2,7 @@
 
 {% block content %}
 <h1>Пользователь: {{ user }}</h1>
+<a class="btn btn-primary" href="/password" role="button">изменить пароль</a>
 <br>
 <h2>Мои голосования</h2>
 {% for voting in votings %}
@@ -26,8 +27,7 @@
 
             {% endfor %}
             {% csrf_token %}
-<input class="btn btn-primary" type="submit" class="btn" name="vote_button"
-                                   value="Удалить пока не реализованно ">
+            <a class="btn btn-primary" href="/edit/{{ voting.id }}" class="btn" name="vote_button">Редактировать</a>
         </form>
 
 

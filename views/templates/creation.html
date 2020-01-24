@@ -21,7 +21,7 @@
                 var new_sub = document.createElement("input");
                 new_sub.type = "submit";
                 new_sub.id = "sub";
-                new_sub.class = "btn btn-success"
+                new_sub.className = "btn btn-success";
                 new_sub.value = "Создать голосование";
                 container.appendChild(new_sub);
 
@@ -38,7 +38,7 @@
 
     {% csrf_token %}
     <br>
-    {{ form }}
+    {{ form.as_p }}
  <br>
     <input type="button" class="btn btn-primary" value="Добавить вариант ответа" onclick="addField()">
     <br>
