@@ -45,7 +45,7 @@
             <input class="btn btn-primary" type="submit" name="vote_button"
                    value="Голосовать">
             <input type="hidden" value="{{voting.id}}" name="voting_id">
-            % if voting.author == user %}
+            {% if voting.author == user %}
 
                                 <a class="btn btn-primary" href="/edit/{{ voting.id }}" class="btn"
                                    name="vote_button">Редактировать</a>
