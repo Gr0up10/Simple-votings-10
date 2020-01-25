@@ -19,16 +19,15 @@ def login_page(request):
         post = User.objects.filter(username=username)
         print(post)
         if post:
-            username = request.POST['username']
-            print(request.POST['username'])
-            request.session['username'] = username
+            # request.session['username'] = username
             from django.contrib import auth
-            user = auth.authenticate(username=username, password=password)
-            if user is not None and user.is_active:
+            user1 = auth.authenticate(username=username, password=password)
+            if user1 is not None and user1.is_active:
                 # Правильный пароль и пользователь "активен"
-                auth.login(request, user)
-            print('SESSION STARTED')
-            return redirect("home")
+                auth.login(request, user1)
+                return redirect("home")
+            else:
+                return render(request, 'registration/login.html', context)
         else:
             return render(request, 'registration/login.html', context)
     return render(request, 'registration/login.html', context)
