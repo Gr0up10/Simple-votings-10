@@ -130,31 +130,3 @@ def register(request):
         form = RegisterFormView()
         context['form'] = form
         return render(request, 'register.html', context)
-
-
-def login_user(request):
-    context = dict()
-    form = LoginView().form_class()
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user_ = authenticate(request, username=username, password=password)
-        if user_ is not None:
-            login(request, user_)
-            return redirect('/home')
-        else:
-            context['form'] = form
-            return render(request, 'registration/login.html', context)
-    context['form'] = form
-    return render(request, 'registration/login.html', context)
-
-
-def reset(request):
-    context = dict()
-    form = PasswordResetView().form_class
-    if request.method == 'POST':
-        # send_mail(str(PasswordResetView().subject_template_name),
-        #           str(PasswordResetView().email_template_name))
-        return HttpResponse(PasswordResetView().subject_template_name)
-    context['form'] = form
-    return render(request, 'password-reset/reset.html', context)
