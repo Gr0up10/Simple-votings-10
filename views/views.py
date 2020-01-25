@@ -12,7 +12,6 @@ def login_page(request):
     context = dict()
     data_t = ThemeBD.objects.in_bulk()
     lent = len(data_t)
-    print(data_t[lent].Theme)
     context['theme_flag'] = (data_t[lent].Theme)
     if request.method == 'POST':
         username = request.POST['username']
@@ -65,7 +64,7 @@ def index(request):
     ids = dict()
     data_t = ThemeBD.objects.in_bulk()
     lent = len(data_t)
-    print(data_t[lent].Theme)
+
     context['theme_flag'] = (data_t[lent].Theme)
     # context['optNum'] = len(context['options'])
     la = list()
@@ -137,7 +136,6 @@ def vote(request, option_id):
     context['option_id'] = option_id  # номер вопроса
     data_t = ThemeBD.objects.in_bulk()
     lent = len(data_t)
-    print(data_t[lent].Theme)
     context['theme_flag'] = (data_t[lent].Theme)
 
     labels = []
@@ -158,7 +156,6 @@ def edit(request, option_id):
     context = dict()
     data_t = ThemeBD.objects.in_bulk()
     lent = len(data_t)
-    print(data_t[lent].Theme)
     context['theme_flag'] = (data_t[lent].Theme)
     context['auth'] = request.user.is_authenticated
     if request.method == "POST":
@@ -229,7 +226,6 @@ def user(request):
         context['votings'] = votings
         data_t = ThemeBD.objects.in_bulk()
         lent = len(data_t)
-        print(data_t[lent].Theme)
         context['theme_flag'] = (data_t[lent].Theme)
     else:
         return render(request, 'Log_in.html')
@@ -243,7 +239,6 @@ def create(request):
     context['mode'] = 1
     data_t = ThemeBD.objects.in_bulk()
     lent = len(data_t)
-    print(data_t[lent].Theme)
     context['theme_flag'] = (data_t[lent].Theme)
     if request.method == 'GET':
         context['form'] = CreateVoting()
@@ -277,7 +272,6 @@ def register(request):
     context = dict()
     data_t = ThemeBD.objects.in_bulk()
     lent = len(data_t)
-    print(data_t[lent].Theme)
     context['theme_flag'] = (data_t[lent].Theme)
     if request.method == 'POST':
         form = RegisterFormView(request.POST)
@@ -301,7 +295,6 @@ def password_change(request):
     context = dict()
     data_t = ThemeBD.objects.in_bulk()
     lent = len(data_t)
-    print(data_t[lent].Theme)
     context['theme_flag'] = (data_t[lent].Theme)
     context['auth'] = request.user.is_authenticated  # нужно для отображения меню
     context['form'] = PasswordChangeForm(request.user)
