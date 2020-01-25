@@ -17,9 +17,10 @@
         <!--<div class="container d-flex"> -->
 
 
+        <div class="row row-cols-1">
         {% for voting in votings %}
 
-            <div class="card m-2 w-100 flex-fill" style="width: 500px;">
+            <div class="card m-2 flex-fill" style="width: 500px; min-width: 450px">
                 <div class="card-body bg-d">
                     <a href="/vote/{{ voting.id }}" class="h5 card-title">{{ voting.question }}</a>
 
@@ -47,8 +48,8 @@
 
                                     {% endfor %}
                                 </td>
-                                <td width="100%">
-                                    <canvas id="myChart{{ voting.id }}"></canvas>
+                                <td width="50%">
+                                    <canvas id="myChart{{ voting.id }}" style="max-width: 400px; max-height: 200px"></canvas>
                                 </td>
                                 {% csrf_token %}
                             </tr>
@@ -78,6 +79,7 @@
                 </div>
             </div>
         {% endfor %}
+        </div>
     </div>
     <!--</div>-->
     <!--<input type="hidden" id="len" value="{{len}}"> -->
@@ -124,11 +126,14 @@
 
                 // Configuration options go here
                 options: {
+                {% if theme_flag %}
                     legend: {
+                        display: false,
                         labels: {
                             fontColor: 'white'
                         }
                     }
+                {% endif %}
                 }
             });
         });

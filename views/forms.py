@@ -1,5 +1,4 @@
 from django.views.generic.edit import FormView
-from django.contrib.auth.forms import UserCreationForm ,PasswordChangeForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
@@ -11,7 +10,7 @@ class RegisterFormView(UserCreationForm):
     success_url = "/login/"
 
     # Шаблон, который будет использоваться при отображении представления.
-    template_name = "register.html"
+    template_name = "registration/register.html"
     email = forms.EmailField(max_length=254, help_text='Это поле обязательно')
 
     def form_valid(self, form):
@@ -30,5 +29,13 @@ class CreateVoting(forms.Form):
     main_text = forms.CharField(max_length=200, min_length=1, required=True, label='Основной текст')
     isCheckbox = forms.BooleanField(label='Можно голосовать за несколько вариантов', required=False)
 
+
+class ThemeForm(forms.Form):
+    flag = forms.BooleanField(label='Темная тема', required=False)
+
+
+#class NumOfOptions(forms.Form):
+
 # class NumOfOptions(forms.Form):
+
 #    number = forms.IntegerField(max_value=10, min_value=1, required=True, label='Количество вариантов для голосования')

@@ -1,4 +1,3 @@
-import itertools
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponse, redirect, reverse
@@ -7,6 +6,46 @@ from .forms import *
 import json
 from django.utils.safestring import SafeString
 from django.contrib.auth import update_session_auth_hash
+
+
+def login_page(request):
+    context = dict()
+    data_t = ThemeBD.objects.in_bulk()
+    lent = len(data_t)
+    context['theme_flag'] = (data_t[lent].Theme)
+    if request.method == 'POST':
+        username = request.POST['username']
+        password =  request.POST['password']
+        post = User.objects.filter(username=username)
+        # print(post)
+        if post:
+            # request.session['username'] = username
+            from django.contrib import auth
+            user1 = auth.authenticate(username=username, password=password)
+            if user1 is not None and user1.is_active:
+                # Правильный пароль и пользователь "активен"
+                auth.login(request, user1)
+                return redirect("home")
+            else:
+                return render(request, 'registration/login.html', context)
+        else:
+            return render(request, 'registration/login.html', context)
+    return render(request, 'registration/login.html', context)
+
+
+def theme_change(request):
+    if request.method == "POST":
+        if request.POST.get('theme_flag') == 'dark':
+            print('flag is dark')
+            flag = True
+            item = ThemeBD(Theme=flag)
+            item.save()
+        elif request.POST.get('theme_flag') == 'light':
+            print('flag is light')
+            flag = False
+            item = ThemeBD(Theme=flag)
+            item.save()
+    return render(request, 'theme.html')
 
 
 def index(request):
@@ -22,12 +61,16 @@ def index(request):
 
     context['len'] = len(context['votings'])
     ids = dict()
+    data_t = ThemeBD.objects.in_bulk()
+    lent = len(data_t)
+
+    context['theme_flag'] = (data_t[lent].Theme)
     # context['optNum'] = len(context['options'])
     la = list()
     da = list()
     for i in range(context['len']):
         context['options'] = context['votings'][i].options()
-        print(context['options'])
+        # print(context['options'])
 
         labels = []
         data = []
@@ -45,6 +88,19 @@ def index(request):
     if request.method == 'POST':
         single_vote(request)
 
+    #     f = ThemeForm(request.POST)
+    #     if f.is_valid():
+    #         flag = bool(request.POST.get('flag'))
+    #         # Сохранение данных
+    #         item = ThemeBD(Theme= flag)
+    #         item.save()
+    #         # Формирование ответа
+    #         context['flag'] = flag
+    #         context['form'] = f
+    #     else:
+    #         context['form'] = f
+    else:
+        context['nothing_entered'] = True
     if request.method == 'GET':
         context['ids'] = ids
     return render(request, 'index.html', context)
@@ -55,6 +111,7 @@ def single_vote(request):
         option_id = request.POST.getlist('answer')  # getlist - функция , которая возвращяет list всех answer
         voting_id = request.POST.get('voting_id')
         if request.user.is_authenticated:
+            print('проверка повторного голосования')
             if not (Vote.objects.filter(user=request.user,
                                         voting=Voting.objects.get(
                                         id=voting_id)).exists()):  # Проверка голосовал ли пользователь в этом голосовании или нет
@@ -63,12 +120,25 @@ def single_vote(request):
                                  user=request.user,
                                  voting=Voting.objects.get(id=voting_id))
                     vote1.save()
+                    print('Голос засчитан')
             else:
-                return HttpResponse('Вы уже голосовали')  # красиво оформить вывод
+                print('Уже голосовал')
+                context = dict()
+                context['auth'] = request.user.is_authenticated  # нужно для отображения меню
+                return redirect("alr")
         else:
             context = dict()
             context['auth'] = request.user.is_authenticated  # нужно для отображения меню
             return render(request, 'Log_in.html', context)
+
+
+def already(request):
+    context = dict()
+    context['auth'] = request.user.is_authenticated  # нужно для отображения меню
+    data_t = ThemeBD.objects.in_bulk()
+    lent = len(data_t)
+    context['theme_flag'] = (data_t[lent].Theme)
+    return render(request, 'already.html', context)
 
 
 def vote(request, option_id):
@@ -77,6 +147,9 @@ def vote(request, option_id):
     context['voting'] = Voting.objects.get(id=option_id)  # добавление вопроса по его id
     context['options'] = Option.objects.filter(voting_id=option_id)  # добавление всех его вариантов ответа
     context['option_id'] = option_id  # номер вопроса
+    data_t = ThemeBD.objects.in_bulk()
+    lent = len(data_t)
+    context['theme_flag'] = (data_t[lent].Theme)
 
     labels = []
     data = []
@@ -94,6 +167,9 @@ def vote(request, option_id):
 
 def edit(request, option_id):
     context = dict()
+    data_t = ThemeBD.objects.in_bulk()
+    lent = len(data_t)
+    context['theme_flag'] = (data_t[lent].Theme)
     context['auth'] = request.user.is_authenticated
     if request.method == "POST":
         if request.POST.get("delete"):
@@ -128,6 +204,7 @@ def edit(request, option_id):
             context['mode'] = 3
             context['voting'] = Voting.objects.get(id=option_id)
             context['options'] = Option.objects.filter(voting_id=option_id)
+            context['opt_len'] = len(context['options'])
             context['count_options'] = context['options'].count()
             context['option_id'] = option_id
         if request.POST.get("done"):
@@ -158,8 +235,63 @@ def user(request):
     if request.user.is_authenticated:
         context = dict()
         context['auth'] = request.user.is_authenticated  # нужно для отображения меню
-        votings = Voting.objects.all()
+        votings = Voting.objects.filter(author=request.user)
         context['votings'] = votings
+
+        data_t = ThemeBD.objects.in_bulk()
+        lent = len(data_t)
+        context['theme_flag'] = data_t[lent].Theme
+
+        votes = Vote.objects.filter(user=request.user)
+        options = list()
+        for vote1 in votes:
+            options.append(vote1.option)
+        votings = set()
+        for option in options:
+            votings.add(option.voting)
+        context['votings_voted'] = votings
+
+        indexes = []
+        for voting in context['votings']:
+            indexes.append(int(voting.id))
+        for voting in context['votings_voted']:
+            indexes.append(int(voting.id)+100)
+        context['indexes'] = indexes
+
+        la = list()
+        da = list()
+        for i in range(len(context['votings'])):
+            context['options'] = context['votings'][i].options()
+
+            labels = []
+            data = []
+
+            for option in context['options']:
+                labels.append(option.text)
+                data.append(option.vote_count())
+
+            la.append(SafeString(json.dumps(labels)))
+            da.append(SafeString(json.dumps(data)))
+
+        votings_voted_list = list()
+        for voting in context['votings_voted']:
+            votings_voted_list.append(voting)
+
+        for i in range(len(context['votings_voted'])):
+            context['options'] = votings_voted_list[i].options()
+
+            labels = []
+            data = []
+
+            for option in context['options']:
+                labels.append(option.text)
+                data.append(option.vote_count())
+
+            la.append(SafeString(json.dumps(labels)))
+            da.append(SafeString(json.dumps(data)))
+
+        context['la'] = la
+        context['da'] = da
     else:
         return render(request, 'Log_in.html')
 
@@ -170,10 +302,14 @@ def create(request):
     context = dict()
     context['auth'] = request.user.is_authenticated  # нужно для отображения меню
     context['mode'] = 1
+    data_t = ThemeBD.objects.in_bulk()
+    lent = len(data_t)
+    context['theme_flag'] = (data_t[lent].Theme)
     if request.method == 'GET':
         context['form'] = CreateVoting()
 
     if request.method == 'POST':
+
         if request.user.is_authenticated:
             main_text = request.POST.get('main_text')
             isCheckbox = bool(request.POST.get('isCheckbox'))
@@ -191,12 +327,17 @@ def create(request):
             return redirect(vote, voting_id)  # редирект на voting/voting_id
         else:
             return render(request, 'Log_in.html')
+    else:
+        context['nothing_entered'] = True
 
     return render(request, 'creation.html', context)
 
 
 def register(request):
     context = dict()
+    data_t = ThemeBD.objects.in_bulk()
+    lent = len(data_t)
+    context['theme_flag'] = (data_t[lent].Theme)
     if request.method == 'POST':
         form = RegisterFormView(request.POST)
         context['form'] = form
@@ -208,15 +349,18 @@ def register(request):
             if _user.is_active:
                 login(request, _user)
                 return render(request, 'index.html', context)
-        return render(request, 'register.html', context)
+        return render(request, 'registration/register.html', context)
     else:
         form = RegisterFormView()
         context['form'] = form
-        return render(request, 'register.html', context)
+        return render(request, 'registration/register.html', context)
 
 @login_required()
 def password_change(request):
     context = dict()
+    data_t = ThemeBD.objects.in_bulk()
+    lent = len(data_t)
+    context['theme_flag'] = (data_t[lent].Theme)
     context['auth'] = request.user.is_authenticated  # нужно для отображения меню
     context['form'] = PasswordChangeForm(request.user)
     if request.method == 'POST':
