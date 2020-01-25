@@ -30,24 +30,23 @@ def index(request):
 
 
 def single_vote(request):
+    is_voted = False
     if request.method == 'POST':
-        option_id = request.POST.getlist('answer')  # getlist - функция , которая возвращяет list всех answer
+        # getlist - функция , которая возвращяет list всех answer
+        option_id = request.POST.getlist('answer')
         voting_id = request.POST.get('voting_id')
         if request.user.is_authenticated:
             if not (Vote.objects.filter(user=request.user,
                                         voting=Voting.objects.get(
-                                            id=voting_id)).exists()):  # Проверка голосовал ли пользователь в этом голосовании или нет
+                                            # Проверка голосовал ли пользователь в этом голосовании или нет
+                                            id=voting_id)).exists()):
                 for i in range(len(option_id)):  # добавление всех ответов
                     vote1 = Vote(option=Option.objects.get(id=option_id[i]),
                                  user=request.user,
                                  voting=Voting.objects.get(id=voting_id))
                     vote1.save()
-            else:
-                return HttpResponse('Вы уже голосовали')  # красиво оформить вывод
-        else:
-            context = dict()
-            context['auth'] = request.user.is_authenticated  # нужно для отображения меню
-            return render(request, 'Log_in.html', context)
+                is_voted = True
+    return is_voted
 
 
 def vote(request, option_id):
@@ -67,7 +66,7 @@ def vote(request, option_id):
     context['labels'] = SafeString(json.dumps(labels))
     context['data'] = SafeString(json.dumps(data))
 
-    single_vote(request)
+    context['is_voted'] = single_vote(request)
     return render(request, 'vote.html', context)
 
 
@@ -125,8 +124,7 @@ def register(request):
             if _user.is_active:
                 login(request, _user)
                 return render(request, 'index.html', context)
-        return render(request, 'register.html', context)
     else:
         form = RegisterFormView()
         context['form'] = form
-        return render(request, 'register.html', context)
+    return render(request, 'registration/register.html', context)
