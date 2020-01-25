@@ -25,7 +25,7 @@ from views.forms import RegisterFormView
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('', views.index),
-                  path('home/', views.index, name = "home"),
+                  path('home/', views.index, name="home"),
                   path('register/', views.register),
                   # path('login/', auth_views.LoginView.as_view(template_name='registration/login.html')),
                   path('login/', views.login_page),
@@ -48,5 +48,6 @@ urlpatterns = [
                   path('reset/done/',
                        auth_views.PasswordResetCompleteView.as_view(template_name='password-reset/reset/done.html'),
                        name='password_reset_complete'),
+                  path('already/', views.already, name="alr"),
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

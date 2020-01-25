@@ -17,7 +17,7 @@ def login_page(request):
         username = request.POST['username']
         password =  request.POST['password']
         post = User.objects.filter(username=username)
-        print(post)
+        # print(post)
         if post:
             # request.session['username'] = username
             from django.contrib import auth
@@ -70,7 +70,7 @@ def index(request):
     da = list()
     for i in range(context['len']):
         context['options'] = context['votings'][i].options()
-        print(context['options'])
+        # print(context['options'])
 
         labels = []
         data = []
@@ -111,6 +111,7 @@ def single_vote(request):
         option_id = request.POST.getlist('answer')  # getlist - функция , которая возвращяет list всех answer
         voting_id = request.POST.get('voting_id')
         if request.user.is_authenticated:
+            print('проверка повторного голосования')
             if not (Vote.objects.filter(user=request.user,
                                         voting=Voting.objects.get(
                                         id=voting_id)).exists()):  # Проверка голосовал ли пользователь в этом голосовании или нет
@@ -119,12 +120,25 @@ def single_vote(request):
                                  user=request.user,
                                  voting=Voting.objects.get(id=voting_id))
                     vote1.save()
+                    print('Голос засчитан')
             else:
-                return HttpResponse('Вы уже голосовали')  # красиво оформить вывод
+                print('Уже голосовал')
+                context = dict()
+                context['auth'] = request.user.is_authenticated  # нужно для отображения меню
+                return redirect("alr")
         else:
             context = dict()
             context['auth'] = request.user.is_authenticated  # нужно для отображения меню
             return render(request, 'Log_in.html', context)
+
+
+def already(request):
+    context = dict()
+    context['auth'] = request.user.is_authenticated  # нужно для отображения меню
+    data_t = ThemeBD.objects.in_bulk()
+    lent = len(data_t)
+    context['theme_flag'] = (data_t[lent].Theme)
+    return render(request, 'already.html', context)
 
 
 def vote(request, option_id):
