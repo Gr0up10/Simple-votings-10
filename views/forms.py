@@ -30,5 +30,12 @@ class CreateVoting(forms.Form):
     main_text = forms.CharField(max_length=200, min_length=1, required=True, label='Основной текст')
     isCheckbox = forms.BooleanField(label='Можно голосовать за несколько вариантов', required=False)
 
+
+class ThemeForm(forms.Form):
+    flag = forms.BooleanField(label='Темная тема', required=False)
+
+#class NumOfOptions(forms.Form):
+
 # class NumOfOptions(forms.Form):
+
 #    number = forms.IntegerField(max_value=10, min_value=1, required=True, label='Количество вариантов для голосования')

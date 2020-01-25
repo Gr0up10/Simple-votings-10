@@ -9,6 +9,20 @@ from django.utils.safestring import SafeString
 from django.contrib.auth import update_session_auth_hash
 
 
+def theme_change(request):
+    if request.method == "POST":
+        if request.POST.get('theme_flag') == 'dark':
+            print('flag is dark')
+            flag = True
+            item = ThemeBD(Theme=flag)
+            item.save()
+        elif request.POST.get('theme_flag') == 'light':
+            print('flag is light')
+            flag = False
+            item = ThemeBD(Theme=flag)
+            item.save()
+    return render(request, 'theme.html')
+
 def index(request):
     context = dict()
     context['auth'] = request.user.is_authenticated  # нужно для отображения меню
@@ -22,6 +36,10 @@ def index(request):
 
     context['len'] = len(context['votings'])
     ids = dict()
+    data_t = ThemeBD.objects.in_bulk()
+    lent = len(data_t)
+    print(data_t[lent].Theme)
+    context['theme_flag'] = (data_t[lent].Theme)
     # context['optNum'] = len(context['options'])
     la = list()
     da = list()
@@ -45,6 +63,19 @@ def index(request):
     if request.method == 'POST':
         single_vote(request)
 
+    #     f = ThemeForm(request.POST)
+    #     if f.is_valid():
+    #         flag = bool(request.POST.get('flag'))
+    #         # Сохранение данных
+    #         item = ThemeBD(Theme= flag)
+    #         item.save()
+    #         # Формирование ответа
+    #         context['flag'] = flag
+    #         context['form'] = f
+    #     else:
+    #         context['form'] = f
+    else:
+        context['nothing_entered'] = True
     if request.method == 'GET':
         context['ids'] = ids
     return render(request, 'index.html', context)
@@ -77,6 +108,10 @@ def vote(request, option_id):
     context['voting'] = Voting.objects.get(id=option_id)  # добавление вопроса по его id
     context['options'] = Option.objects.filter(voting_id=option_id)  # добавление всех его вариантов ответа
     context['option_id'] = option_id  # номер вопроса
+    data_t = ThemeBD.objects.in_bulk()
+    lent = len(data_t)
+    print(data_t[lent].Theme)
+    context['theme_flag'] = (data_t[lent].Theme)
 
     labels = []
     data = []
@@ -94,6 +129,10 @@ def vote(request, option_id):
 
 def edit(request, option_id):
     context = dict()
+    data_t = ThemeBD.objects.in_bulk()
+    lent = len(data_t)
+    print(data_t[lent].Theme)
+    context['theme_flag'] = (data_t[lent].Theme)
     context['auth'] = request.user.is_authenticated
     if request.method == "POST":
         if request.POST.get("delete"):
@@ -160,6 +199,10 @@ def user(request):
         context['auth'] = request.user.is_authenticated  # нужно для отображения меню
         votings = Voting.objects.all()
         context['votings'] = votings
+        data_t = ThemeBD.objects.in_bulk()
+        lent = len(data_t)
+        print(data_t[lent].Theme)
+        context['theme_flag'] = (data_t[lent].Theme)
     else:
         return render(request, 'Log_in.html')
 
@@ -170,10 +213,15 @@ def create(request):
     context = dict()
     context['auth'] = request.user.is_authenticated  # нужно для отображения меню
     context['mode'] = 1
+    data_t = ThemeBD.objects.in_bulk()
+    lent = len(data_t)
+    print(data_t[lent].Theme)
+    context['theme_flag'] = (data_t[lent].Theme)
     if request.method == 'GET':
         context['form'] = CreateVoting()
 
     if request.method == 'POST':
+
         if request.user.is_authenticated:
             main_text = request.POST.get('main_text')
             isCheckbox = bool(request.POST.get('isCheckbox'))
@@ -191,12 +239,18 @@ def create(request):
             return redirect(vote, voting_id)  # редирект на voting/voting_id
         else:
             return render(request, 'Log_in.html')
+    else:
+        context['nothing_entered'] = True
 
     return render(request, 'creation.html', context)
 
 
 def register(request):
     context = dict()
+    data_t = ThemeBD.objects.in_bulk()
+    lent = len(data_t)
+    print(data_t[lent].Theme)
+    context['theme_flag'] = (data_t[lent].Theme)
     if request.method == 'POST':
         form = RegisterFormView(request.POST)
         context['form'] = form
@@ -217,6 +271,10 @@ def register(request):
 @login_required()
 def password_change(request):
     context = dict()
+    data_t = ThemeBD.objects.in_bulk()
+    lent = len(data_t)
+    print(data_t[lent].Theme)
+    context['theme_flag'] = (data_t[lent].Theme)
     context['auth'] = request.user.is_authenticated  # нужно для отображения меню
     context['form'] = PasswordChangeForm(request.user)
     if request.method == 'POST':

@@ -32,7 +32,9 @@ urlpatterns = [
                   path('create/', views.create),
                   path('vote/<int:option_id>', views.vote),
                   path('User', views.user),
+                  path('theme/', views.theme_change),
                   path('password', views.password_change),
                   path('edit/<int:option_id>', views.edit),
+
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
