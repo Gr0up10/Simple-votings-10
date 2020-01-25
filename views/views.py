@@ -221,11 +221,63 @@ def user(request):
     if request.user.is_authenticated:
         context = dict()
         context['auth'] = request.user.is_authenticated  # нужно для отображения меню
-        votings = Voting.objects.all()
+        votings = Voting.objects.filter(author=request.user)
         context['votings'] = votings
+
         data_t = ThemeBD.objects.in_bulk()
         lent = len(data_t)
-        context['theme_flag'] = (data_t[lent].Theme)
+        context['theme_flag'] = data_t[lent].Theme
+
+        votes = Vote.objects.filter(user=request.user)
+        options = list()
+        for vote1 in votes:
+            options.append(vote1.option)
+        votings = set()
+        for option in options:
+            votings.add(option.voting)
+        context['votings_voted'] = votings
+
+        indexes = []
+        for voting in context['votings']:
+            indexes.append(int(voting.id))
+        for voting in context['votings_voted']:
+            indexes.append(int(voting.id)+100)
+        context['indexes'] = indexes
+
+        la = list()
+        da = list()
+        for i in range(len(context['votings'])):
+            context['options'] = context['votings'][i].options()
+
+            labels = []
+            data = []
+
+            for option in context['options']:
+                labels.append(option.text)
+                data.append(option.vote_count())
+
+            la.append(SafeString(json.dumps(labels)))
+            da.append(SafeString(json.dumps(data)))
+
+        votings_voted_list = list()
+        for voting in context['votings_voted']:
+            votings_voted_list.append(voting)
+
+        for i in range(len(context['votings_voted'])):
+            context['options'] = votings_voted_list[i].options()
+
+            labels = []
+            data = []
+
+            for option in context['options']:
+                labels.append(option.text)
+                data.append(option.vote_count())
+
+            la.append(SafeString(json.dumps(labels)))
+            da.append(SafeString(json.dumps(data)))
+
+        context['la'] = la
+        context['da'] = da
     else:
         return render(request, 'Log_in.html')
 

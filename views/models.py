@@ -29,5 +29,6 @@ class Vote(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     voting = models.ForeignKey(to=Voting, on_delete=models.CASCADE, null=True, blank=True)
 
+
 class ThemeBD(models.Model):
     Theme = models.BooleanField(default=False)
