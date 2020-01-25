@@ -20,7 +20,7 @@
         <div class="row row-cols-1">
         {% for voting in votings %}
 
-            <div class="card m-2 flex-fill" style="width: 500px; min-width: 400px">
+            <div class="card m-2 flex-fill" style="width: 500px; min-width: 450px">
                 <div class="card-body bg-d">
                     <a href="/vote/{{ voting.id }}" class="h5 card-title">{{ voting.question }}</a>
 
@@ -48,7 +48,7 @@
 
                                     {% endfor %}
                                 </td>
-                                <td width="50%">
+                                <td width="60%">
                                     <canvas id="myChart{{ voting.id }}"></canvas>
                                 </td>
                                 {% csrf_token %}
