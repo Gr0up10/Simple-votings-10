@@ -1,5 +1,4 @@
 from django.views.generic.edit import FormView
-from django.contrib.auth.forms import UserCreationForm ,PasswordChangeForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
@@ -11,7 +10,7 @@ class RegisterFormView(UserCreationForm):
     success_url = "/login/"
 
     # Шаблон, который будет использоваться при отображении представления.
-    template_name = "register.html"
+    template_name = "registration/register.html"
     email = forms.EmailField(max_length=254, help_text='Это поле обязательно')
 
     def form_valid(self, form):

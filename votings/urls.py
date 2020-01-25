@@ -27,7 +27,7 @@ urlpatterns = [
                   path('', views.index),
                   path('home/', views.index),
                   path('register/', views.register),
-                  path('login/', auth_views.LoginView.as_view()),
+                  path('login/', auth_views.LoginView.as_view(template_name='registration/login.html')),
                   path('logout/', auth_views.LogoutView.as_view()),
                   path('create/', views.create),
                   path('vote/<int:option_id>', views.vote),
@@ -35,6 +35,17 @@ urlpatterns = [
                   path('theme/', views.theme_change),
                   path('password', views.password_change),
                   path('edit/<int:option_id>', views.edit),
-
+                  path('password-reset/',
+                       auth_views.PasswordResetView.as_view(template_name='password-reset/reset/reset.html'),
+                       name='password_reset'),
+                  path('password-reset/done/',
+                       auth_views.PasswordResetDoneView.as_view(template_name='password-reset/done.html'),
+                       name='password_reset_done'),
+                  path('reset/<uidb64>/<token>/',
+                       auth_views.PasswordResetConfirmView.as_view(template_name='password-reset/confirm.html'),
+                       name='password_reset_confirm'),
+                  path('reset/done/',
+                       auth_views.PasswordResetCompleteView.as_view(template_name='password-reset/reset/done.html'),
+                       name='password_reset_complete'),
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

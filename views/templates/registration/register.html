@@ -1,16 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 <div class="container">
 	<div class="row">
 		<div class="col mt-3">
-			<h1>Авторизация</h1>
 			<form method="POST">
 				{% csrf_token %}
-				{{form.as_p}}
-				<a class="btn btn-success" href="/password-reset" name="remind_password">Восстановить пароль</a>
-				<input class="btn btn-success" type="submit" value="Войти" name="sign_in">
+				{% for item in form %}
+				<p>{{item.label}}: {{item}}</p>
+				{% endfor %}
+				<button class="btn btn-success" type="submit">Зарегистрироваться</button>
 			</form>
 		</div>
 	</div>
@@ -30,5 +29,4 @@
 		</div>
 	</div>
 </div>
-
 {% endblock %}

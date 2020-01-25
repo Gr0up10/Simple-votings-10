@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1> Придумайте новый пароль </h1>
+<form method="POST">
+	{% csrf_token %}
+	{% for i in form %}
+	<p>{{i.label}}: {{ i }}</p>
+	{% endfor %}
+	<input class="btn btn-success" type="submit" value="Изменить мой пароль">
+</form>
+{% if form.errors %}
+<div class="alert alert-danger">
+	<ul>
+		{% for field, errors in form.errors.items %}
+			{% for error in errors %}
+				<li >{{ error }}</li>
+			{% endfor %}
+		{% endfor %}
+	</ul>
+</div>
+{% endif %}
+
+{% endblock %}

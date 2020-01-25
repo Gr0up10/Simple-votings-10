@@ -262,11 +262,11 @@ def register(request):
             if _user.is_active:
                 login(request, _user)
                 return render(request, 'index.html', context)
-        return render(request, 'register.html', context)
+        return render(request, 'registration/register.html', context)
     else:
         form = RegisterFormView()
         context['form'] = form
-        return render(request, 'register.html', context)
+        return render(request, 'registration/register.html', context)
 
 @login_required()
 def password_change(request):
