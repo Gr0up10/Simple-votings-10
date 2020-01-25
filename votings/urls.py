@@ -25,9 +25,10 @@ from views.forms import RegisterFormView
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('', views.index),
-                  path('home/', views.index),
+                  path('home/', views.index, name = "home"),
                   path('register/', views.register),
-                  path('login/', auth_views.LoginView.as_view(template_name='registration/login.html')),
+                  # path('login/', auth_views.LoginView.as_view(template_name='registration/login.html')),
+                  path('login/', views.login_page),
                   path('logout/', auth_views.LogoutView.as_view()),
                   path('create/', views.create),
                   path('vote/<int:option_id>', views.vote),

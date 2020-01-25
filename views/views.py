@@ -1,4 +1,3 @@
-import itertools
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponse, redirect, reverse
@@ -7,6 +6,33 @@ from .forms import *
 import json
 from django.utils.safestring import SafeString
 from django.contrib.auth import update_session_auth_hash
+
+
+def login_page(request):
+    context = dict()
+    data_t = ThemeBD.objects.in_bulk()
+    lent = len(data_t)
+    print(data_t[lent].Theme)
+    context['theme_flag'] = (data_t[lent].Theme)
+    if request.method == 'POST':
+        username = request.POST['username']
+        password =  request.POST['password']
+        post = User.objects.filter(username=username)
+        print(post)
+        if post:
+            username = request.POST['username']
+            print(request.POST['username'])
+            request.session['username'] = username
+            from django.contrib import auth
+            user = auth.authenticate(username=username, password=password)
+            if user is not None and user.is_active:
+                # Правильный пароль и пользователь "активен"
+                auth.login(request, user)
+            print('SESSION STARTED')
+            return redirect("home")
+        else:
+            return render(request, 'registration/login.html', context)
+    return render(request, 'registration/login.html', context)
 
 
 def theme_change(request):
@@ -22,6 +48,7 @@ def theme_change(request):
             item = ThemeBD(Theme=flag)
             item.save()
     return render(request, 'theme.html')
+
 
 def index(request):
     context = dict()

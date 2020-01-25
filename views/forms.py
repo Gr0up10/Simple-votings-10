@@ -33,6 +33,7 @@ class CreateVoting(forms.Form):
 class ThemeForm(forms.Form):
     flag = forms.BooleanField(label='Темная тема', required=False)
 
+
 #class NumOfOptions(forms.Form):
 
 # class NumOfOptions(forms.Form):
