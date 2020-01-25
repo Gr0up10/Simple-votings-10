@@ -5,7 +5,9 @@
 
 <h1>Пользователь: {{ user }}</h1>
 <br>
+{% if f1 %}
 <h2>Мои голосования:</h2>
+{%endif%}
 <div class="row row-cols-1">
         {% for voting in votings %}
 
@@ -67,8 +69,9 @@
             </div>
         {% endfor %}
         </div>
-
+{% if f2 %}
 <h2>Мои голоса:</h2>
+{%endif%}
 <div class="row row-cols-1">
         {% for voting in votings_voted %}
 
@@ -111,17 +114,10 @@
                             </tr>
                         </table>
                         <div class="row">
-
-                            <input class="btn btn-primary" type="submit" name="vote_button"
-                                   value="Голосовать">
-
-
+                            {% if voting.author == user %}
                                 <a class="btn btn-primary" href="/edit/{{ voting.id }}" class="btn"
                                    name="vote_button">Редактировать</a>
-
-
-
-
+                            {% endif %}
                         </div>
 
                         <input type="hidden" value="{{ voting.id }}" name="voting_id">

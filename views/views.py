@@ -251,6 +251,9 @@ def user(request):
             votings.add(option.voting)
         context['votings_voted'] = votings
 
+        context['f1'] = len(context['votings']) > 0
+        context['f2'] = len(context['votings_voted']) > 0
+
         indexes = []
         for voting in context['votings']:
             indexes.append(int(voting.id))
