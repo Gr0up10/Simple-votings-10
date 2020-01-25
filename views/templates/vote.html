@@ -91,12 +91,13 @@
 
      // Configuration options go here
      options: {
-        legend: {
-            labels: {
-                // This more specific font property overrides the global property
-                fontColor: 'white'
-            }
-        }
+                {% if theme_flag %}
+                    legend: {
+                        labels: {
+                            fontColor: 'white'
+                        }
+                    }
+                {% endif %}
     }
     });
 </script>
