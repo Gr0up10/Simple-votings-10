@@ -194,6 +194,7 @@ def edit(request, option_id):
             context['mode'] = 3
             context['voting'] = Voting.objects.get(id=option_id)
             context['options'] = Option.objects.filter(voting_id=option_id)
+            context['opt_len'] = len(context['options'])
             context['count_options'] = context['options'].count()
             context['option_id'] = option_id
         if request.POST.get("done"):
